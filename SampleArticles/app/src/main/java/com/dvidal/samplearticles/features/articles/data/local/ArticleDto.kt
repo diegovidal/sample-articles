@@ -1,6 +1,7 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * @author diegovidal on 2019-12-18.
@@ -8,11 +9,11 @@ import androidx.room.Entity
 
 @Entity
 data class ArticleDto(
-    private val sku: String,
-    private val title: String,
-    private val description: String?,
-    private val imageUrl: String,
+    @PrimaryKey val sku: String = "",
+    val title: String = "",
+    val description: String? = "",
+    val imageUrl: String = "",
 
-    private val isReview: Boolean = false,
-    private val isFavorite: Boolean = false
+    val isReview: Boolean = false,
+    val isFavorite: Boolean = false
 )

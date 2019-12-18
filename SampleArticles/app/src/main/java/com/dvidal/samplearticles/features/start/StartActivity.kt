@@ -1,12 +1,13 @@
-package com.dvidal.samplearticles
+package com.dvidal.samplearticles.features.start
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.dvidal.samplearticles.R
 
-class MainActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_start)
     }
 }

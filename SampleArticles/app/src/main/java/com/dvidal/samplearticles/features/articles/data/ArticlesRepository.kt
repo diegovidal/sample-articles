@@ -2,7 +2,7 @@ package com.dvidal.samplearticles.features.articles.data
 
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteResponse
-import com.dvidal.samplearticles.features.articles.domain.ArticleView
+import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 
 /**
  * @author diegovidal on 2019-12-23.

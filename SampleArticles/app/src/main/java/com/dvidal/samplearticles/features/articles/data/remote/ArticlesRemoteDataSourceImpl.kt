@@ -1,5 +1,7 @@
 package com.dvidal.samplearticles.features.articles.data.remote
 
+import com.dvidal.samplearticles.core.common.EitherResult
+import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import javax.inject.Inject
 
 /**
@@ -9,7 +11,7 @@ class ArticlesRemoteDataSourceImpl @Inject constructor(
     private val remote: ArticlesRemoteApi
 ): ArticlesRemoteDataSource {
 
-    override fun fetchAllArticles(): List<ArticlesRemoteResponse> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun fetchAllArticles(): EitherResult<List<ArticleView>> {
+        TODO()
     }
 }

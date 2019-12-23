@@ -1,4 +1,4 @@
-package com.dvidal.samplearticles.core.common
+package com.dvidal.samplearticles.core.datasource.remote
 
 import android.content.Context
 import com.dvidal.samplearticles.core.extension.networkInfo

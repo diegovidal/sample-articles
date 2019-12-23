@@ -1,4 +1,4 @@
-package com.dvidal.samplearticles.core.common
+package com.dvidal.samplearticles.core.datasource.remote
 
 /**
  * @author diegovidal on 26/12/18.

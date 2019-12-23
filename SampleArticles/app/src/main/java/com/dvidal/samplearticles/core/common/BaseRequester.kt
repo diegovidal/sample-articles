@@ -1,4 +1,6 @@
 package com.dvidal.samplearticles.core.common
+import com.dvidal.samplearticles.core.datasource.remote.NetworkHandler
+import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
 import retrofit2.Call
 
 /**

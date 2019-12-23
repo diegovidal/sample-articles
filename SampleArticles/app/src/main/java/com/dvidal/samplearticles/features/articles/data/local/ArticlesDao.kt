@@ -13,8 +13,23 @@ import androidx.room.Query
 interface ArticlesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addArticle(articleDto: ArticleDto): Long
+    fun insertAllArticles(vararg articles: ArticleDto)
 
     @Query("SELECT * FROM articledto")
-    fun fetchArticles(): List<ArticleDto>
+    fun fetchAllArticles(): List<ArticleDto>
+
+    @Query("DELETE FROM articledto")
+    fun clearAllArticles()
+
+    @Query("UPDATE articledto SET isReview = 1 WHERE sku = :sku")
+    fun reviewArticle(sku: String)
+
+    @Query("UPDATE articledto SET isFavorite = 1 WHERE sku = :sku")
+    fun favoriteArticle(sku: String)
+
+    @Query("SELECT * FROM articledto WHERE isFavorite = 1")
+    fun fetchFavoriteArticles(): List<ArticleDto>
+
+    @Query("SELECT * FROM articledto WHERE isReview = 0")
+    fun fetchUnreviewedArticles(): List<ArticleDto>
 }

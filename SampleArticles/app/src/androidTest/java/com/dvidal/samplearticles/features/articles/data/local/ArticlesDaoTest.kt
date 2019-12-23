@@ -36,13 +36,112 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun addAnArticleAndReadInList() {
+    fun whenAddTwoArticles_shouldReturnTwoArticles() {
         val article = ArticleDto("foo")
-        val article2 = ArticleDto("foo", "uhuuu")
+        val article2 = ArticleDto("foo2", "test")
 
-        articlesDao.addArticle(article)
-        articlesDao.addArticle(article2)
-        val articles = articlesDao.fetchArticles()
-        assertEquals("uhuuu", articles.first().title)
+        articlesDao.insertAllArticles(article, article2)
+        val articles = articlesDao.fetchAllArticles()
+        assertEquals(2, articles.size)
+    }
+
+    @Test
+    fun whenAddArticleWithSameSku_shouldReplace() {
+
+        val titleArticle = "The Title"
+
+        val article = ArticleDto("foo")
+        val article2 = ArticleDto("foo", titleArticle)
+
+        articlesDao.insertAllArticles(article, article2)
+        val articles = articlesDao.fetchAllArticles()
+        assertEquals(titleArticle, articles.first().title)
+    }
+
+    @Test
+    fun whenAddArticlesAndClear_shouldReturnEmpty() {
+
+        val article = ArticleDto("foo")
+        val article2 = ArticleDto("foo2", "test")
+
+        articlesDao.insertAllArticles(article, article2)
+        articlesDao.clearAllArticles()
+        val articles = articlesDao.fetchAllArticles()
+        assertEquals(0, articles.size)
+    }
+
+    @Test
+    fun whenAddArticle_shouldReturnIsReviewAsFalse() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        val articles = articlesDao.fetchAllArticles()
+
+        val articleExpected = articles.first()
+        assertEquals(articleExpected.isReview, false)
+    }
+
+    @Test
+    fun whenAddArticleAndReview_shouldReturnIsReviewAsTrue() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        articlesDao.reviewArticle(foo.sku)
+        val articles = articlesDao.fetchAllArticles()
+
+        val articleExpected = articles.first()
+        assertEquals(articleExpected.isReview, true)
+    }
+
+    @Test
+    fun whenAddArticle_shouldReturnIsFavoriteAsFalse() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        val articles = articlesDao.fetchAllArticles()
+
+        val articleExpected = articles.first()
+        assertEquals(articleExpected.isFavorite, false)
+    }
+
+    @Test
+    fun whenAddArticleAndFavorite_shouldReturnIsFavoriteAsTrue() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        articlesDao.favoriteArticle(foo.sku)
+        val articles = articlesDao.fetchAllArticles()
+
+        val articleExpected = articles.first()
+        assertEquals(articleExpected.isFavorite, true)
+    }
+
+    @Test
+    fun whenAddArticleAndFavoriteAndFetchUnreviewedArticles_shouldReturnEmpty() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        articlesDao.reviewArticle(foo.sku)
+        val articles = articlesDao.fetchUnreviewedArticles()
+
+        assertEquals(0, articles.size)
+    }
+
+    @Test
+    fun whenAddArticleAndFavoriteAndFetchFavoriteArticles_shouldReturnFavoriteArticles() {
+
+        val foo = ArticleDto("foo")
+
+        articlesDao.insertAllArticles(foo)
+        articlesDao.favoriteArticle(foo.sku)
+        val articles = articlesDao.fetchFavoriteArticles()
+
+        val articleExpected = articles.first()
+        assertEquals(articleExpected.isFavorite, true)
     }
 }

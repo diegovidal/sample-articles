@@ -38,7 +38,7 @@ class ArticlesLocalDataSourceTest {
         val list = listOf<ArticleDto>()
         every { appDatabase.articlesDao().fetchAllArticles() } returns list
 
-        val articles = dataSource.fetchAllArticles()
+        val articles = dataSource.fetchAllArticles().rightOrNull()
         verify(exactly = 1) {appDatabase.articlesDao().fetchAllArticles()}
         assertEquals(list, articles)
     }
@@ -80,7 +80,7 @@ class ArticlesLocalDataSourceTest {
         val list = listOf<ArticleDto>()
         every { appDatabase.articlesDao().fetchFavoriteArticles() } returns list
 
-        val articles = dataSource.fetchFavoriteArticles()
+        val articles = dataSource.fetchFavoriteArticles().rightOrNull()
         verify(exactly = 1) {appDatabase.articlesDao().fetchFavoriteArticles()}
         assertEquals(list, articles)
     }
@@ -91,7 +91,7 @@ class ArticlesLocalDataSourceTest {
         val list = listOf<ArticleDto>()
         every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns list
 
-        val articles = dataSource.fetchUnreviewedArticles()
+        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()
         verify(exactly = 1) {appDatabase.articlesDao().fetchUnreviewedArticles()}
         assertEquals(list, articles)
     }

@@ -13,4 +13,17 @@ data class ArticleView(
 
     val isReview: Boolean = false,
     val isFavorite: Boolean = false
-)
+) {
+
+    fun mapperToArticleDto(): ArticleDto {
+
+        return ArticleDto(
+            sku = this.sku,
+            title = this.title,
+            description = this.description,
+            imageUrl = this.imageUrl,
+            isReview = this.isReview,
+            isFavorite = this.isFavorite
+        )
+    }
+}

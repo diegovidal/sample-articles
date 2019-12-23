@@ -1,14 +1,14 @@
-package com.dvidal.samplearticles.features.articles.data.local
+package com.dvidal.samplearticles.features.articles.domain
 
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 
 /**
- * @author diegovidal on 2019-12-18.
+ * @author diegovidal on 2019-12-23.
  */
-interface ArticlesLocalDataSource {
+interface ArticlesRepository {
 
-    fun insertAllArticles(listArticlesDto: List<ArticleDto>?): EitherResult<Unit>
+    fun insertAllArticles(list: List<ArticleView>?): EitherResult<Unit>
 
     fun fetchAllArticles(): EitherResult<List<ArticleView>>
 

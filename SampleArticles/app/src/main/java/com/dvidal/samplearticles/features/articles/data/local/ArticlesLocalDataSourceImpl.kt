@@ -13,24 +13,24 @@ class ArticlesLocalDataSourceImpl @Inject constructor (
     private val appDatabase: AppDatabase
 ): ArticlesLocalDataSource {
 
-    override fun insertAllArticles(listArticlesDto: List<ArticleDto>){
-        appDatabase.articlesDao().insertAllArticles(listArticlesDto)
+    override fun insertAllArticles(listArticlesDto: List<ArticleDto>?): EitherResult<Unit>{
+        return catching { appDatabase.articlesDao().insertAllArticles(listArticlesDto) }
     }
 
     override fun fetchAllArticles(): EitherResult<List<ArticleView>> {
         return catching { appDatabase.articlesDao().fetchAllArticles().map { it.mapperToArticleView() } }
     }
 
-    override fun clearAllArticles() {
-        appDatabase.articlesDao().clearAllArticles()
+    override fun clearAllArticles(): EitherResult<Unit> {
+        return catching { appDatabase.articlesDao().clearAllArticles() }
     }
 
-    override fun reviewArticle(sku: String) {
-        appDatabase.articlesDao().reviewArticle(sku)
+    override fun reviewArticle(sku: String): EitherResult<Unit> {
+        return catching { appDatabase.articlesDao().reviewArticle(sku) }
     }
 
-    override fun favoriteArticle(sku: String) {
-        appDatabase.articlesDao().favoriteArticle(sku)
+    override fun favoriteArticle(sku: String): EitherResult<Unit> {
+        return catching { appDatabase.articlesDao().favoriteArticle(sku) }
     }
 
     override fun fetchFavoriteArticles(): EitherResult<List<ArticleView>> {

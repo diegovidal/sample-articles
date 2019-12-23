@@ -7,4 +7,6 @@ sealed class RemoteFailure {
 
     class NetworkConnection : Throwable()
     class ServerError : Throwable()
+
+    class ErrorLoadingData : Throwable()
 }

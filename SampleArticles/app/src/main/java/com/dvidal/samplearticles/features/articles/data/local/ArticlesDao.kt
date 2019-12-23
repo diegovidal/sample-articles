@@ -13,7 +13,7 @@ import androidx.room.Query
 interface ArticlesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllArticles(vararg articles: ArticleDto)
+    fun insertAllArticles(listArticlesDto: List<ArticleDto>)
 
     @Query("SELECT * FROM articledto")
     fun fetchAllArticles(): List<ArticleDto>

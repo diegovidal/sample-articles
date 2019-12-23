@@ -40,7 +40,8 @@ class ArticlesDaoTest {
         val article = ArticleDto("foo")
         val article2 = ArticleDto("foo2", "test")
 
-        articlesDao.insertAllArticles(article, article2)
+        val list = listOf(article, article2)
+        articlesDao.insertAllArticles(list)
         val articles = articlesDao.fetchAllArticles()
         assertEquals(2, articles.size)
     }
@@ -53,7 +54,8 @@ class ArticlesDaoTest {
         val article = ArticleDto("foo")
         val article2 = ArticleDto("foo", titleArticle)
 
-        articlesDao.insertAllArticles(article, article2)
+        val list = listOf(article, article2)
+        articlesDao.insertAllArticles(list)
         val articles = articlesDao.fetchAllArticles()
         assertEquals(titleArticle, articles.first().title)
     }
@@ -64,7 +66,8 @@ class ArticlesDaoTest {
         val article = ArticleDto("foo")
         val article2 = ArticleDto("foo2", "test")
 
-        articlesDao.insertAllArticles(article, article2)
+        val list = listOf(article, article2)
+        articlesDao.insertAllArticles(list)
         articlesDao.clearAllArticles()
         val articles = articlesDao.fetchAllArticles()
         assertEquals(0, articles.size)
@@ -75,7 +78,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         val articles = articlesDao.fetchAllArticles()
 
         val articleExpected = articles.first()
@@ -87,7 +91,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         articlesDao.reviewArticle(foo.sku)
         val articles = articlesDao.fetchAllArticles()
 
@@ -100,7 +105,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         val articles = articlesDao.fetchAllArticles()
 
         val articleExpected = articles.first()
@@ -112,7 +118,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         articlesDao.favoriteArticle(foo.sku)
         val articles = articlesDao.fetchAllArticles()
 
@@ -125,7 +132,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         articlesDao.reviewArticle(foo.sku)
         val articles = articlesDao.fetchUnreviewedArticles()
 
@@ -137,7 +145,8 @@ class ArticlesDaoTest {
 
         val foo = ArticleDto("foo")
 
-        articlesDao.insertAllArticles(foo)
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
         articlesDao.favoriteArticle(foo.sku)
         val articles = articlesDao.fetchFavoriteArticles()
 

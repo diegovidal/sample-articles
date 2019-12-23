@@ -2,6 +2,7 @@ package com.dvidal.samplearticles.core.di.component
 
 import com.dvidal.samplearticles.core.di.module.ApplicationModule
 import com.dvidal.samplearticles.core.di.module.DatabaseModule
+import com.dvidal.samplearticles.core.di.module.RemoteModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,7 +13,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     ApplicationModule::class,
-    DatabaseModule::class
+    DatabaseModule::class,
+    RemoteModule::class
 ])
 interface AppComponent {
 

@@ -12,7 +12,7 @@ interface ArticlesRemoteApi {
     @GET("categories/100/articles?appDomain={appDomain}&locale={locale}&limit={limit}")
     fun fetchAllArticles(
         @Path("limit") limit: Int,
-        @Path("appDomain") appDomain: String = "1",
-        @Path("locale") locale: String = "de_DE"
+        @Path("appDomain") appDomain: String,
+        @Path("locale") locale: String
     ): Call<ArticlesRemoteResponse>
 }

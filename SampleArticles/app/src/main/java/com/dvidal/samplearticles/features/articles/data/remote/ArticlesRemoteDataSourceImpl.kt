@@ -7,7 +7,7 @@ class ArticlesRemoteDataSourceImpl(
 
 ): ArticlesRemoteDataSource {
 
-    override fun fetchAllArticles(): List<ArticlesResponse> {
+    override fun fetchAllArticles(): List<ArticlesRemoteResponse> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -5,5 +5,5 @@ package com.dvidal.samplearticles.features.articles.data.remote
  */
 interface ArticlesRemoteDataSource {
 
-    fun fetchAllArticles(): List<ArticlesResponse>
+    fun fetchAllArticles(): List<ArticlesRemoteResponse>
 }

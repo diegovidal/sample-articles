@@ -29,6 +29,7 @@ dependencies {
     def glide_version = "4.10.0"
     def dagger_version = "2.16"
     def mockk_version = "1.9.3"
+    def retrofit_version = "2.7.0"
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -53,6 +54,10 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     // Mockk
     testImplementation "io.mockk:mockk:$mockk_version"

@@ -1,7 +1,7 @@
 package com.dvidal.samplearticles.features.articles.data
 
 import com.dvidal.samplearticles.core.common.EitherResult
-import com.dvidal.samplearticles.features.articles.data.remote.ArticlesResponse
+import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteResponse
 import com.dvidal.samplearticles.features.articles.domain.ArticleView
 
 /**
@@ -9,7 +9,7 @@ import com.dvidal.samplearticles.features.articles.domain.ArticleView
  */
 interface ArticlesRepository {
 
-    fun insertAllArticles(list: List<ArticlesResponse>): EitherResult<Unit>
+    fun insertAllArticles(list: List<ArticlesRemoteResponse>): EitherResult<Unit>
 
     fun fetchAllArticles(): EitherResult<List<ArticleView>>
 

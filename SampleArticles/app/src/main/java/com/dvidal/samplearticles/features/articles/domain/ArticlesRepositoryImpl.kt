@@ -60,6 +60,10 @@ class ArticlesRepositoryImpl @Inject constructor(
         return localDataSource.fetchUnreviewedArticles()
     }
 
+    override fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
+        return localDataSource.fetchReviewedArticles()
+    }
+
     companion object {
 
         const val NUM_ARTICLES = 10

@@ -152,4 +152,15 @@ class ArticlesRepositoryTest {
         verify(exactly = 1) { localDataSource.fetchUnreviewedArticles() }
         Assert.assertEquals(list, articles)
     }
+
+    @Test
+    fun `when fetch reviewed articles should return and call localDataSource fetch reviewed articles`() {
+
+        val list = listOf<ArticleView>()
+        every { localDataSource.fetchReviewedArticles() } returns Either.right(list)
+
+        val articles = repository.fetchReviewedArticles().rightOrNull()
+        verify(exactly = 1) { localDataSource.fetchReviewedArticles() }
+        Assert.assertEquals(list, articles)
+    }
 }

@@ -1,10 +1,15 @@
 package com.dvidal.samplearticles.features.start.presentation
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_start.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -25,8 +30,29 @@ class StartFragment: BaseFragment() {
             .build().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel?.startArticles()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configureButtonsListener()
+
+        viewModel?.viewStateSingleLiveEvents?.observe(viewLifecycleOwner, Observer (::handleViewStateSingleLiveEvents))
+    }
+
+    private fun configureButtonsListener() {
+
+        bt_start_articles.setOnClickListener { viewModel?.startArticles() }
+        bt_clear_articles.setOnClickListener { viewModel?.clearArticles() }
+    }
+
+    private fun handleViewStateSingleLiveEvents(viewState: StartViewModelContract.ViewState?) {
+
+        when(viewState) {
+            is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")
+            is StartViewModelContract.ViewState.StartArticlesSuccess -> Toast.makeText(context, "Sucesso StartArticlesSuccess!", Toast.LENGTH_SHORT).show()
+            is StartViewModelContract.ViewState.StartArticlesError -> Timber.i("StartArticlesError")
+
+            is StartViewModelContract.ViewState.ClearArticlesLoading -> Timber.i("StartArticlesLoading")
+            is StartViewModelContract.ViewState.ClearArticlesSuccess -> Toast.makeText(context, "Sucesso ClearArticlesSuccess!", Toast.LENGTH_SHORT).show()
+            is StartViewModelContract.ViewState.ClearArticlesError -> Timber.i("StartArticlesError")
+        }
     }
 }

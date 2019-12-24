@@ -17,7 +17,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    val failure by lazy { MutableLiveEvent<Throwable>() }
+    val failure by lazy { SingleLiveEvent<Throwable>() }
 
     @CallSuper
     override fun onCleared() {
@@ -26,6 +26,6 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope {
     }
 
     open fun handleFailure(failure: Throwable) {
-        this.failure.postEvent(failure)
+        this.failure.postValue(failure)
     }
 }

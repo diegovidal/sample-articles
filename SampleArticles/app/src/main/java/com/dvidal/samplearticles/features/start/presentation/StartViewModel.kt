@@ -1,12 +1,13 @@
 package com.dvidal.samplearticles.features.start.presentation
 
-import com.dvidal.samplearticles.core.common.BaseViewModel
-import com.dvidal.samplearticles.core.common.UseCase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import com.dvidal.samplearticles.core.common.*
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.usecases.ClearArticlesUseCase
 import com.dvidal.samplearticles.features.start.domain.usecases.StartArticlesUseCase
 import kotlinx.coroutines.Dispatchers
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -17,18 +18,52 @@ class StartViewModel @Inject constructor(
     private val startArticlesUseCase: StartArticlesUseCase
 ): BaseViewModel() {
 
-    fun startArticles() {
+    private val _requestStartArticles = MutableLiveData<StartViewModelContract.ViewState>()
+    private val requestStartArticles: LiveData<StartViewModelContract.ViewState> = _requestStartArticles
 
-        startArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
-            it.either(::handleFailure, ::handleSuccess)
+    private val _requestClearArticles = MutableLiveData<StartViewModelContract.ViewState>()
+    private val requestClearArticles: LiveData<StartViewModelContract.ViewState> = _requestClearArticles
+
+    val viewStateSingleLiveEvents = SingleLiveEvent<StartViewModelContract.ViewState>().apply {
+
+        addSource(requestStartArticles){
+            postValue(it)
+        }
+
+        addSource(requestClearArticles){
+            postValue(it)
         }
     }
 
-    override fun handleFailure(failure: Throwable) {
-        Timber.i("E aeee erro")
+    fun startArticles() {
+
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesLoading)
+        startArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
+            it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
+        }
     }
 
-    private fun handleSuccess(list: List<ArticleView>) {
-        Timber.i("E aeee successooo")
+    fun clearArticles() {
+
+        _requestClearArticles.postValue(StartViewModelContract.ViewState.ClearArticlesLoading)
+        clearArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
+            it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
+        }
+    }
+
+    private fun handleStartArticlesFailure(failure: Throwable) {
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesError)
+    }
+
+    private fun handleStartArticlesSuccess(list: List<ArticleView>) {
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesSuccess)
+    }
+
+    private fun handleClearArticlesFailure(failure: Throwable) {
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.ClearArticlesError)
+    }
+
+    private fun handleClearArticlesSuccess(unit: Unit) {
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.ClearArticlesSuccess)
     }
 }

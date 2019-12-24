@@ -1,4 +1,4 @@
-package com.dvidal.samplearticles.features.start
+package com.dvidal.samplearticles.features.start.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -21,4 +21,6 @@ interface ArticlesLocalDataSource {
     fun fetchFavoriteArticles(): EitherResult<List<ArticleView>>
 
     fun fetchUnreviewedArticles(): EitherResult<List<ArticleView>>
+
+    fun fetchReviewedArticles(): EitherResult<List<ArticleView>>
 }

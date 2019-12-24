@@ -40,4 +40,8 @@ class ArticlesLocalDataSourceImpl @Inject constructor (
     override fun fetchUnreviewedArticles(): EitherResult<List<ArticleView>> {
         return catching { appDatabase.articlesDao().fetchUnreviewedArticles().map { it.mapperToArticleView() } }
     }
+
+    override fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
+        return catching { appDatabase.articlesDao().fetchReviewedArticles().map { it.mapperToArticleView() } }
+    }
 }

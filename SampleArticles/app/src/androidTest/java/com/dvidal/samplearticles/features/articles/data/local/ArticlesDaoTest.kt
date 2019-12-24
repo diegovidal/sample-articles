@@ -128,7 +128,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleAndFavoriteAndFetchUnreviewedArticles_shouldReturnEmpty() {
+    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnEmpty() {
 
         val foo = ArticleDto("foo")
 
@@ -138,6 +138,19 @@ class ArticlesDaoTest {
         val articles = articlesDao.fetchUnreviewedArticles()
 
         assertEquals(0, articles.size)
+    }
+
+    @Test
+    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnReviewedArticles() {
+
+        val foo = ArticleDto("foo")
+
+        val list = listOf(foo)
+        articlesDao.insertAllArticles(list)
+        articlesDao.reviewArticle(foo.sku)
+        val articles = articlesDao.fetchReviewedArticles()
+
+        assertEquals(1, articles.size)
     }
 
     @Test

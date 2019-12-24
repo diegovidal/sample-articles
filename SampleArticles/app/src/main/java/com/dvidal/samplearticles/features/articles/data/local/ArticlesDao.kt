@@ -32,4 +32,7 @@ interface ArticlesDao {
 
     @Query("SELECT * FROM articledto WHERE isReview = 0")
     fun fetchUnreviewedArticles(): List<ArticleDto>
+
+    @Query("SELECT * FROM articledto WHERE isReview = 1")
+    fun fetchReviewedArticles(): List<ArticleDto>
 }

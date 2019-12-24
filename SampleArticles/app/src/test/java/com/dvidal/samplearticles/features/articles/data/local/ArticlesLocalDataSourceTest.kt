@@ -95,4 +95,15 @@ class ArticlesLocalDataSourceTest {
         verify(exactly = 1) {appDatabase.articlesDao().fetchUnreviewedArticles()}
         assertEquals(list, articles)
     }
+
+    @Test
+    fun `when fetch reviewed articles should return and call articlesDao fetch reviewed articles`() {
+
+        val list = listOf<ArticleDto>()
+        every { appDatabase.articlesDao().fetchReviewedArticles() } returns list
+
+        val articles = dataSource.fetchReviewedArticles().rightOrNull()
+        verify(exactly = 1) {appDatabase.articlesDao().fetchReviewedArticles()}
+        assertEquals(list, articles)
+    }
 }

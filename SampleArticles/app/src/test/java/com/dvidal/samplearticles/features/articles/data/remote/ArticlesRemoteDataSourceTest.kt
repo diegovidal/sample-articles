@@ -41,6 +41,6 @@ class ArticlesRemoteDataSourceTest {
 
         val expectedRemoteResponse = remoteDataSource.fetchAllArticles(numArticles).rightOrNull()
         verify(exactly = 1) {remoteApi.fetchAllArticles(numArticles)}
-        assertEquals(expectedRemoteResponse, remoteResponse.articles)
+        assertEquals(expectedRemoteResponse, remoteResponse.embedded.articles)
     }
 }

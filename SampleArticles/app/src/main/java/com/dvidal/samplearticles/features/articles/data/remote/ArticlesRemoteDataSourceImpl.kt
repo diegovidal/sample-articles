@@ -16,7 +16,7 @@ class ArticlesRemoteDataSourceImpl @Inject constructor(
 
     override fun fetchAllArticles(numArticles: Int): EitherResult<List<ArticleView>> {
 
-        return request(remoteApi.fetchAllArticles(numArticles), { response ->
-            response.articles.map { it.mapperToArticleView()}}, ArticlesRemoteResponse.empty())
+        return request(remoteApi.fetchAllArticles(limit = numArticles), { response ->
+            response.embedded.articles.map { it.mapperToArticleView()}}, ArticlesRemoteResponse.empty())
     }
 }

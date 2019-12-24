@@ -2,6 +2,7 @@ package com.dvidal.samplearticles.core.di.module
 
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteApi
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Call
@@ -36,6 +37,7 @@ class RemoteModule {
     fun provideMoshi(): Moshi {
 
         return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 

@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.start.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +9,7 @@ import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
+import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import kotlinx.android.synthetic.main.fragment_start.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -47,12 +49,33 @@ class StartFragment: BaseFragment() {
 
         when(viewState) {
             is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")
-            is StartViewModelContract.ViewState.StartArticlesSuccess -> Toast.makeText(context, "Sucesso StartArticlesSuccess!", Toast.LENGTH_SHORT).show()
-            is StartViewModelContract.ViewState.StartArticlesError -> Timber.i("StartArticlesError")
+            is StartViewModelContract.ViewState.StartArticlesSuccess -> goToArticlesActivity()
+            is StartViewModelContract.ViewState.Warning.StartArticlesError -> showToast(viewState.throwable.message)
 
             is StartViewModelContract.ViewState.ClearArticlesLoading -> Timber.i("StartArticlesLoading")
-            is StartViewModelContract.ViewState.ClearArticlesSuccess -> Toast.makeText(context, "Sucesso ClearArticlesSuccess!", Toast.LENGTH_SHORT).show()
-            is StartViewModelContract.ViewState.ClearArticlesError -> Timber.i("StartArticlesError")
+            is StartViewModelContract.ViewState.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
+            is StartViewModelContract.ViewState.Warning.ClearArticlesError -> showToast(viewState.throwable.message)
         }
+    }
+
+    private fun goToArticlesActivity() {
+        startActivity(Intent(context, ArticlesActivity::class.java))
+    }
+
+    private fun handleButton(isEnabled: Boolean, viewState: StartViewModelContract.ViewState?){
+
+        when(viewState) {
+
+            is StartViewModelContract.ViewState.StartArticlesLoading -> {
+
+            }
+            is StartViewModelContract.ViewState.ClearArticlesLoading -> {
+
+            }
+        }
+    }
+
+    private fun showToast(message: String?) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

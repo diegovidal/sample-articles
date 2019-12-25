@@ -1,8 +1,10 @@
 package com.dvidal.samplearticles.features.articles.domain
 
+import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
+import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.data.local.ArticlesLocalDataSource
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDataSource
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
@@ -56,7 +58,7 @@ class ArticlesRepositoryImpl @Inject constructor(
         return localDataSource.fetchFavoriteArticles()
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<List<ArticleView>> {
+    override fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>> {
         return localDataSource.fetchUnreviewedArticles()
     }
 

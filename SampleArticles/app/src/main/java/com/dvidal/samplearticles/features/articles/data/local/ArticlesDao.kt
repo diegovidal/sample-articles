@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -31,7 +32,7 @@ interface ArticlesDao {
     fun fetchFavoriteArticles(): List<ArticleDto>
 
     @Query("SELECT * FROM articledto WHERE isReview = 0")
-    fun fetchUnreviewedArticles(): List<ArticleDto>
+    fun fetchUnreviewedArticles(): LiveData<List<ArticleDto>>
 
     @Query("SELECT * FROM articledto WHERE isReview = 1")
     fun fetchReviewedArticles(): List<ArticleDto>

@@ -1,7 +1,9 @@
 package com.dvidal.samplearticles.features.articles.data.domain
 
+import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
+import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.data.local.ArticlesLocalDataSource
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDataSource
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
@@ -145,10 +147,10 @@ class ArticlesRepositoryTest {
     @Test
     fun `when fetch unreviewed articles should return and call localDataSource fetch unreviewed articles`() {
 
-        val list = listOf<ArticleView>()
-        every { localDataSource.fetchUnreviewedArticles() } returns Either.right(list)
+        val list = listOf<ArticleDto>()
+        every { localDataSource.fetchUnreviewedArticles() } returns Either.right(MutableLiveData(list))
 
-        val articles = repository.fetchUnreviewedArticles().rightOrNull()
+        val articles = repository.fetchUnreviewedArticles().rightOrNull()?.value
         verify(exactly = 1) { localDataSource.fetchUnreviewedArticles() }
         Assert.assertEquals(list, articles)
     }

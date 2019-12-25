@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
+import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import io.mockk.every
 import io.mockk.mockk
@@ -89,9 +90,9 @@ class ArticlesLocalDataSourceTest {
     fun `when fetch unreviewed articles should return and call articlesDao fetch unreviewed articles`() {
 
         val list = listOf<ArticleDto>()
-        every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns list
+        every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns MutableLiveData(list)
 
-        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()
+        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()?.value
         verify(exactly = 1) {appDatabase.articlesDao().fetchUnreviewedArticles()}
         assertEquals(list, articles)
     }

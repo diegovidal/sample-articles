@@ -135,9 +135,9 @@ class ArticlesDaoTest {
         val list = listOf(foo)
         articlesDao.insertAllArticles(list)
         articlesDao.reviewArticle(foo.sku)
-        val articles = articlesDao.fetchUnreviewedArticles()
+        val articles = articlesDao.fetchUnreviewedArticles().value
 
-        assertEquals(0, articles.size)
+        assertEquals(0, articles?.size)
     }
 
     @Test

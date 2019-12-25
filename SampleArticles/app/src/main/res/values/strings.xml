@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SampleArticles</string>
+    <string name="toast_articles_cleared">Articles Cleared.</string>
 </resources>

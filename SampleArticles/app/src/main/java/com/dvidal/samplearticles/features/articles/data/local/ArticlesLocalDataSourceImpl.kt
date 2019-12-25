@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
+import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.common.catching
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
@@ -43,9 +44,9 @@ class ArticlesLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<List<ArticleView>> {
+    override fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>> {
         return catching {
-            appDatabase.articlesDao().fetchUnreviewedArticles().map { it.mapperToArticleView() }
+            appDatabase.articlesDao().fetchUnreviewedArticles()
         }
     }
 

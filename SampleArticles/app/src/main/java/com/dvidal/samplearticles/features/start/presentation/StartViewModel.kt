@@ -52,7 +52,7 @@ class StartViewModel @Inject constructor(
     }
 
     private fun handleStartArticlesFailure(failure: Throwable) {
-        _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesError)
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.Warning.StartArticlesError(failure))
     }
 
     private fun handleStartArticlesSuccess(list: List<ArticleView>) {
@@ -60,7 +60,7 @@ class StartViewModel @Inject constructor(
     }
 
     private fun handleClearArticlesFailure(failure: Throwable) {
-        _requestStartArticles.postValue(StartViewModelContract.ViewState.ClearArticlesError)
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.Warning.ClearArticlesError(failure))
     }
 
     private fun handleClearArticlesSuccess(unit: Unit) {

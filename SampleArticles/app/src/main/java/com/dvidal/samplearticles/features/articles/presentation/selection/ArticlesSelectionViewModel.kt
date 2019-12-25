@@ -6,8 +6,8 @@ import com.dvidal.samplearticles.core.common.BaseViewModel
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
-import com.dvidal.samplearticles.features.articles.domain.usecases.FavoriteArticleUseCase
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchUnreviewedArticlesUseCase
+import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticleUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import kotlinx.coroutines.Dispatchers
@@ -18,11 +18,35 @@ import javax.inject.Inject
  */
 class ArticlesSelectionViewModel @Inject constructor(
     private val fetchUnreviewedArticlesUseCase: FetchUnreviewedArticlesUseCase,
-    private val favoriteArticleUseCase: FavoriteArticleUseCase
+    private val reviewArticleUseCase: ReviewArticleUseCase
 ) : BaseViewModel() {
 
-    val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
-    var articlesInfoParam: ArticlesInfoParam? = null
+    private val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
+    private var articlesInfoParam: ArticlesInfoParam? = null
+
+    val viewStatesLiveEvents =
+        MediatorLiveData<ArticlesSelectionViewModelContract.ViewState>().apply {
+
+            addSource(fetchUnreviewedArticles) {
+                when {
+                    it.isEmpty() -> postValue(
+                        ArticlesSelectionViewModelContract.ViewState.ArticlesSelectionEmpty(
+                            articlesInfoParam
+                        )
+                    )
+                    it.size == 1 -> postValue(
+                        ArticlesSelectionViewModelContract.ViewState.ShowLastArticleOnQueue(
+                            articlesInfoParam, it.first()
+                        )
+                    )
+                    else -> postValue(
+                        ArticlesSelectionViewModelContract.ViewState.ShowTwoArticlesOnQueue(
+                            articlesInfoParam, it[2], it[1]
+                        )
+                    )
+                }
+            }
+        }
 
     fun initArticlesSelectionScreen(articlesInfoParam: ArticlesInfoParam) {
 
@@ -37,14 +61,15 @@ class ArticlesSelectionViewModel @Inject constructor(
         }
     }
 
-    fun favoriteArticleUseCase(sku: String) {
+    fun reviewArticleUseCase(userInteraction: ArticlesSelectionViewModelContract.UserInteraction) {
 
         val firstArticle = fetchUnreviewedArticles.value?.first()?.sku ?: ""
-        favoriteArticleUseCase.invoke(firstArticle, Dispatchers.IO, job) {
+        userInteraction.sku = firstArticle
+
+        reviewArticleUseCase.invoke(userInteraction, Dispatchers.IO, job) {
             it.either(
-                ::handleFailure,
-                {}
-            )
+                ::handleFailure
+            ) { if (userInteraction is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle) articlesInfoParam?.incrementFavorite() }
         }
     }
 
@@ -56,7 +81,7 @@ class ArticlesSelectionViewModel @Inject constructor(
 
         fetchUnreviewedArticles.apply {
             addSource(list) {
-                val listConverted = it.map { articleDto ->  articleDto.mapperToArticleView() }
+                val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
                 postValue(listConverted)
             }
         }

@@ -25,7 +25,7 @@ class StartViewModel @Inject constructor(
     private val _requestClearArticles = MutableLiveData<StartViewModelContract.ViewState>()
     private val requestClearArticles: LiveData<StartViewModelContract.ViewState> = _requestClearArticles
 
-    val viewStateSingleLiveEvents = SingleLiveEvent<StartViewModelContract.ViewState>().apply {
+    val viewStatesSingleLiveEvents = SingleLiveEvent<StartViewModelContract.ViewState>().apply {
 
         addSource(requestStartArticles){
             postValue(it)

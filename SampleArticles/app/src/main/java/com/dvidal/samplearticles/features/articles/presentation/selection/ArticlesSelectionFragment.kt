@@ -7,6 +7,7 @@ import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
+import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
 import kotlinx.android.synthetic.main.fragment_articles_selection.*
@@ -16,7 +17,7 @@ import javax.inject.Inject
 /**
  * @author diegovidal on 2019-12-24.
  */
-class ArticlesSelectionFragment: BaseFragment() {
+class ArticlesSelectionFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -42,13 +43,42 @@ class ArticlesSelectionFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel?.fetchUnreviewedArticles?.observe(viewLifecycleOwner, Observer {
-            Timber.i("Opa Entrou aqui!!")
-        })
+        viewModel?.viewStatesLiveEvents?.observe(viewLifecycleOwner, Observer (::handleViewStatesLiveEvents))
 
         tv_test.setOnClickListener {
-            viewModel?.favoriteArticleUseCase("000000001000091266")
+            viewModel?.reviewArticleUseCase(ArticlesSelectionViewModelContract.UserInteraction.LikeArticle())
         }
+    }
+
+    private fun handleViewStatesLiveEvents(viewState: ArticlesSelectionViewModelContract.ViewState?) {
+
+        refreshArticlesInfo(viewState?.articlesInfoParam)
+        when(viewState) {
+
+            is ArticlesSelectionViewModelContract.ViewState.ShowTwoArticlesOnQueue -> handleShowTwoArticlesOnQueue(viewState.aip, viewState.firstArticle, viewState.secondArticle)
+            is ArticlesSelectionViewModelContract.ViewState.ShowLastArticleOnQueue -> handleShowLastArticleOnQueue(viewState.aip, viewState.lastArticle)
+            is ArticlesSelectionViewModelContract.ViewState.ArticlesSelectionEmpty -> handleArticlesSelectionEmpty(viewState.aip)
+            else -> Timber.i("handleViewStatesLiveEvents else sentence.")
+        }
+    }
+
+    private fun refreshArticlesInfo(articlesInfoParam: ArticlesInfoParam?) {
+
+        articlesInfoParam?.let {
+
+        }
+    }
+
+    private fun handleShowTwoArticlesOnQueue(aip: ArticlesInfoParam?, firstArticle: ArticleView, secondArticle: ArticleView) {
+       val sas = firstArticle.sku
+    }
+
+    private fun handleShowLastArticleOnQueue(aip: ArticlesInfoParam?, lastArticle: ArticleView) {
+
+    }
+
+    private fun handleArticlesSelectionEmpty(aip: ArticlesInfoParam?) {
+
     }
 
     companion object {

@@ -38,7 +38,7 @@ class StartFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureButtonsListener()
 
-        viewModel?.viewStateSingleLiveEvents?.observe(viewLifecycleOwner, Observer (::handleViewStateSingleLiveEvents))
+        viewModel?.viewStatesSingleLiveEvents?.observe(viewLifecycleOwner, Observer (::handleViewStatesSingleLiveEvents))
     }
 
     private fun configureButtonsListener() {
@@ -47,7 +47,7 @@ class StartFragment: BaseFragment() {
         bt_clear_articles.setOnClickListener { viewModel?.clearArticles() }
     }
 
-    private fun handleViewStateSingleLiveEvents(viewState: StartViewModelContract.ViewState?) {
+    private fun handleViewStatesSingleLiveEvents(viewState: StartViewModelContract.ViewState?) {
 
         when(viewState) {
             is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")

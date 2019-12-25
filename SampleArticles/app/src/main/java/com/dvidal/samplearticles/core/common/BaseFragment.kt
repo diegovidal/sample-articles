@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.dvidal.samplearticles.MyApplication
 
 /**
  * @author diegovidal on 14/12/18.
  */
 abstract class BaseFragment: Fragment() {
+
+    internal val component by lazy { (activity?.application as MyApplication).appComponent.activityComponent().build() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

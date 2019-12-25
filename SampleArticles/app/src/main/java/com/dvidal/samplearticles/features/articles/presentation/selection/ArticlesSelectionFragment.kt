@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
@@ -31,11 +30,7 @@ class ArticlesSelectionFragment : BaseFragment() {
     }
 
     override fun layoutRes() = R.layout.fragment_articles_selection
-
-    override fun injectDagger() {
-        (activity?.application as MyApplication).appComponent.activityComponent()
-            .build().inject(this)
-    }
+    override fun injectDagger() = component.inject(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

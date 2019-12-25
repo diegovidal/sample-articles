@@ -51,20 +51,13 @@ class StartFragment: BaseFragment() {
 
         when(viewState) {
             is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")
-            is StartViewModelContract.ViewState.StartArticlesSuccess -> goToArticlesActivity(viewState.articlesInfoParam)
+            is StartViewModelContract.ViewState.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(viewState.articlesInfoParam)
             is StartViewModelContract.ViewState.Warning.StartArticlesError -> showToast(viewState.throwable.message)
 
             is StartViewModelContract.ViewState.ClearArticlesLoading -> Timber.i("StartArticlesLoading")
             is StartViewModelContract.ViewState.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
             is StartViewModelContract.ViewState.Warning.ClearArticlesError -> showToast(viewState.throwable.message)
         }
-    }
-
-    private fun goToArticlesActivity(articlesInfoParam: ArticlesInfoParam) {
-        val intent = Intent(context, ArticlesActivity::class.java).apply {
-            putExtra(EXTRA_ARTICLES_INFO_PARAM, articlesInfoParam)
-        }
-        startActivity(intent)
     }
 
     private fun handleButton(isEnabled: Boolean, viewState: StartViewModelContract.ViewState?){

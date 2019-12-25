@@ -38,6 +38,7 @@ dependencies {
     def retrofit_version = "2.7.0"
     def moshi_version = "1.9.2"
     def lifecycle_version = "2.1.0"
+    def viewmodel_ktx_version = "2.2.0-rc03"
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -72,6 +73,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
 
     // Mockk
     testImplementation "io.mockk:mockk:$mockk_version"

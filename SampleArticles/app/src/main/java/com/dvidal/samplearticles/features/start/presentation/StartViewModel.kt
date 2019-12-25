@@ -3,6 +3,7 @@ package com.dvidal.samplearticles.features.start.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.*
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
@@ -39,7 +40,7 @@ class StartViewModel @Inject constructor(
     fun startArticles() {
 
         _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesLoading)
-        startArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
+        startArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, viewModelScope) {
             it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
         }
     }
@@ -47,7 +48,7 @@ class StartViewModel @Inject constructor(
     fun clearArticles() {
 
         _requestClearArticles.postValue(StartViewModelContract.ViewState.ClearArticlesLoading)
-        clearArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
+        clearArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, viewModelScope) {
             it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
         }
     }

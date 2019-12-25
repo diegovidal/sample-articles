@@ -2,32 +2,43 @@ package com.dvidal.samplearticles.features.articles.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
+import com.dvidal.samplearticles.core.navigator.Navigator
+import com.dvidal.samplearticles.features.articles.presentation.review.ArticlesReviewFragment
+import com.dvidal.samplearticles.features.articles.presentation.review.ArticlesReviewFragment.Companion.ARTICLES_REVIEW_FRAGMENT_TAG
 import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionFragment
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
+import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.
  */
 class ArticlesActivity: AppCompatActivity() {
 
+    @Inject
+    lateinit var navigator: Navigator
+
+    private fun injectDagger() {
+        (application as MyApplication).appComponent.activityComponent()
+            .build().inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ativity_articles)
-        inflateArticlesSelectionFragment()
+        injectDagger()
+
+        if (savedInstanceState == null)
+            inflateArticlesSelectionFragment()
     }
 
     private fun inflateArticlesSelectionFragment() {
-
-        val articlesInfoParam = intent.extras?.getParcelable(EXTRA_ARTICLES_INFO_PARAM) as? ArticlesInfoParam
-
-        supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.frame_content, ArticlesSelectionFragment.newInstance(articlesInfoParam))
-            ?.commit()
+        navigator.inflateArticlesSelectionFragment(this)
     }
 
-    private fun inflateArticlesReviewsFragment() {
-
+    fun inflateArticlesReviewFragment() {
+        navigator.inflateArticlesReviewFragment(this)
     }
 }

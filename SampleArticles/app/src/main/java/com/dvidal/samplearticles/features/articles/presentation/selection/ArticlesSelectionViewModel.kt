@@ -39,9 +39,9 @@ class ArticlesSelectionViewModel @Inject constructor(
                             articlesInfoParam, it.first()
                         )
                     )
-                    else -> postValue(
+                    it.size > 1 -> postValue(
                         ArticlesSelectionViewModelContract.ViewState.ShowTwoArticlesOnQueue(
-                            articlesInfoParam, it[2], it[1]
+                            articlesInfoParam, it[0], it[1]
                         )
                     )
                 }
@@ -63,13 +63,14 @@ class ArticlesSelectionViewModel @Inject constructor(
 
     fun reviewArticleUseCase(userInteraction: ArticlesSelectionViewModelContract.UserInteraction) {
 
-        val firstArticle = fetchUnreviewedArticles.value?.first()?.sku ?: ""
-        userInteraction.sku = firstArticle
+        fetchUnreviewedArticles.value?.firstOrNull()?.sku?.let { firstArticle ->
+            userInteraction.sku = firstArticle
 
-        reviewArticleUseCase.invoke(userInteraction, Dispatchers.IO, job) {
-            it.either(
-                ::handleFailure
-            ) { if (userInteraction is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle) articlesInfoParam?.incrementFavorite() }
+            reviewArticleUseCase.invoke(userInteraction, Dispatchers.IO, job) {
+                it.either(
+                    ::handleFailure
+                ) { if (userInteraction is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle) articlesInfoParam?.incrementFavorite() }
+            }
         }
     }
 
@@ -82,7 +83,7 @@ class ArticlesSelectionViewModel @Inject constructor(
         fetchUnreviewedArticles.apply {
             addSource(list) {
                 val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
-                postValue(listConverted)
+                value = listConverted
             }
         }
     }

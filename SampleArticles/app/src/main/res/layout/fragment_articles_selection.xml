@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp">
+
+        <ImageView
+            android:id="@+id/iv_first_article"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/bt_like_article"
+            android:layout_width="48dp"
+            android:layout_height="38dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            android:id="@+id/bt_dislike_article"
+            android:layout_width="48dp"
+            android:layout_height="38dp"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_test"
+        android:id="@+id/tv_articles_info"
+        android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Articles Selection" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

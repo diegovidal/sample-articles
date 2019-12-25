@@ -10,12 +10,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ArticlesInfoParam (
-    private val totalArticles: Int = 0,
-    private var totalFavoriteArticles: Int = 0
+    val totalArticles: Int = 0,
+    var totalFavoriteArticles: Int = 0
 ) : Parcelable {
 
     fun incrementFavorite() {
-        totalFavoriteArticles.inc()
+        totalFavoriteArticles += 1
     }
 
     companion object {

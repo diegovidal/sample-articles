@@ -10,6 +10,8 @@ import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
+import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
+import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
 import kotlinx.android.synthetic.main.fragment_start.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -49,7 +51,7 @@ class StartFragment: BaseFragment() {
 
         when(viewState) {
             is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")
-            is StartViewModelContract.ViewState.StartArticlesSuccess -> goToArticlesActivity()
+            is StartViewModelContract.ViewState.StartArticlesSuccess -> goToArticlesActivity(viewState.articlesInfoParam)
             is StartViewModelContract.ViewState.Warning.StartArticlesError -> showToast(viewState.throwable.message)
 
             is StartViewModelContract.ViewState.ClearArticlesLoading -> Timber.i("StartArticlesLoading")
@@ -58,8 +60,11 @@ class StartFragment: BaseFragment() {
         }
     }
 
-    private fun goToArticlesActivity() {
-        startActivity(Intent(context, ArticlesActivity::class.java))
+    private fun goToArticlesActivity(articlesInfoParam: ArticlesInfoParam) {
+        val intent = Intent(context, ArticlesActivity::class.java).apply {
+            putExtra(EXTRA_ARTICLES_INFO_PARAM, articlesInfoParam)
+        }
+        startActivity(intent)
     }
 
     private fun handleButton(isEnabled: Boolean, viewState: StartViewModelContract.ViewState?){

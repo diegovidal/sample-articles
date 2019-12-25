@@ -7,6 +7,8 @@ import com.dvidal.samplearticles.MyApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
+import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
+import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
 import kotlinx.android.synthetic.main.fragment_articles_selection.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,7 +34,9 @@ class ArticlesSelectionFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel?.fetchUnreviewedArticles()
+        arguments?.getParcelable<ArticlesInfoParam>(EXTRA_ARTICLES_INFO_PARAM)?.let {
+            viewModel?.initArticlesSelectionScreen(it)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +47,7 @@ class ArticlesSelectionFragment: BaseFragment() {
         })
 
         tv_test.setOnClickListener {
-            viewModel?.reviewArticleUseCase("000000001000091266")
+            viewModel?.favoriteArticleUseCase("000000001000091266")
         }
     }
 
@@ -51,8 +55,15 @@ class ArticlesSelectionFragment: BaseFragment() {
 
         const val TAG = "Articles_Selection_Fragment_Tag"
 
-        fun newInstance(): ArticlesSelectionFragment {
-            return ArticlesSelectionFragment()
+        fun newInstance(articlesInfoParam: ArticlesInfoParam?): ArticlesSelectionFragment {
+
+            val bundle = Bundle().apply {
+                putParcelable(EXTRA_ARTICLES_INFO_PARAM, articlesInfoParam)
+            }
+
+            return ArticlesSelectionFragment().apply {
+                arguments = bundle
+            }
         }
     }
 }

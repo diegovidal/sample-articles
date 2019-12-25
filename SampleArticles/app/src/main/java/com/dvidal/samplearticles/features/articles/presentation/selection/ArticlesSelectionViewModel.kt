@@ -6,9 +6,10 @@ import com.dvidal.samplearticles.core.common.BaseViewModel
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
+import com.dvidal.samplearticles.features.articles.domain.usecases.FavoriteArticleUseCase
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchUnreviewedArticlesUseCase
-import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticleUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
+import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
@@ -17,13 +18,15 @@ import javax.inject.Inject
  */
 class ArticlesSelectionViewModel @Inject constructor(
     private val fetchUnreviewedArticlesUseCase: FetchUnreviewedArticlesUseCase,
-    private val reviewArticleUseCase: ReviewArticleUseCase
+    private val favoriteArticleUseCase: FavoriteArticleUseCase
 ) : BaseViewModel() {
 
     val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
+    var articlesInfoParam: ArticlesInfoParam? = null
 
-    fun fetchUnreviewedArticles() {
+    fun initArticlesSelectionScreen(articlesInfoParam: ArticlesInfoParam) {
 
+        this.articlesInfoParam = articlesInfoParam
         fetchUnreviewedArticles.notLet {
             fetchUnreviewedArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, job) {
                 it.either(
@@ -34,9 +37,10 @@ class ArticlesSelectionViewModel @Inject constructor(
         }
     }
 
-    fun reviewArticleUseCase(sku: String) {
+    fun favoriteArticleUseCase(sku: String) {
 
-        reviewArticleUseCase.invoke(sku, Dispatchers.IO, job) {
+        val firstArticle = fetchUnreviewedArticles.value?.first()?.sku ?: ""
+        favoriteArticleUseCase.invoke(firstArticle, Dispatchers.IO, job) {
             it.either(
                 ::handleFailure,
                 {}

@@ -11,8 +11,8 @@ import javax.inject.Inject
  */
 @Reusable
 class FavoriteArticleUseCase @Inject constructor(
-    private val repository: ArticlesRepository
+    private val reviewArticleUseCase: ReviewArticleUseCase
 ): UseCase<Unit, String>() {
 
-    override suspend fun run(params: String) = repository.favoriteArticle(params)
+    override suspend fun run(params: String) = reviewArticleUseCase.run(params)
 }

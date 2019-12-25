@@ -10,4 +10,9 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
     }
+
+    companion object {
+
+        const val EXTRA_ARTICLES_INFO_PARAM = "EXTRA_ARTICLES_INFO_PARAM"
+    }
 }

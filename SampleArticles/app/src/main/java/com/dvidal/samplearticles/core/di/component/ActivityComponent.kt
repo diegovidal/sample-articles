@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.core.di.component
 
+import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionFragment
 import com.dvidal.samplearticles.features.start.presentation.StartFragment
 import dagger.Subcomponent
 
@@ -10,7 +11,8 @@ import dagger.Subcomponent
 @Subcomponent
 interface ActivityComponent {
 
-    fun inject(productsFragment: StartFragment)
+    fun inject(startFragment: StartFragment)
+    fun inject(articlesSelectionFragment: ArticlesSelectionFragment)
 
     @Subcomponent.Builder
     interface Builder {

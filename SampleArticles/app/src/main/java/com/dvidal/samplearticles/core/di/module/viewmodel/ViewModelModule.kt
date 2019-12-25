@@ -2,6 +2,7 @@ package com.dvidal.samplearticles.core.di.module.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewModel
 import com.dvidal.samplearticles.features.start.presentation.StartViewModel
 import dagger.Binds
 import dagger.Module
@@ -19,5 +20,10 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(StartViewModel::class)
-    abstract fun bindSplashViewModel(viewModel: StartViewModel): ViewModel
+    abstract fun bindStartViewModel(viewModel: StartViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ArticlesSelectionViewModel::class)
+    abstract fun bindArticlesSelectionViewModel(viewModel: ArticlesSelectionViewModel): ViewModel
 }

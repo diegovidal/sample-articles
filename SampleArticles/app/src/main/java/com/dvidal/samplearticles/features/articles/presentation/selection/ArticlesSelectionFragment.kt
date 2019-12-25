@@ -26,17 +26,21 @@ class ArticlesSelectionFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private val viewModel by lazy {
-        viewModelFactory.get<ArticlesSelectionViewModel>(requireActivity())
+        viewModelFactory.get<ArticlesSelectionViewModel>(this)
     }
 
     override fun layoutRes() = R.layout.fragment_articles_selection
     override fun injectDagger() = component.inject(this)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         arguments?.getParcelable<ArticlesInfoParam>(EXTRA_ARTICLES_INFO_PARAM)?.let {
             viewModel?.initArticlesSelectionScreen(it)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         configureButtons()
         viewModel?.viewStatesLiveEvents?.observe(

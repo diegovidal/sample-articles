@@ -49,6 +49,11 @@ class ArticlesSelectionFragment : BaseFragment() {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? ArticlesActivity)?.updateActionBarTitle(R.string.articles_selection_title)
+    }
+
     private fun configureButtons() {
 
         bt_like_article.setOnClickListener {

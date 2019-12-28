@@ -11,4 +11,6 @@
     <string name="show_reviews_label">Show Reviews</string>
     <string name="empty_articles_desc">Click bellow to see all articles and your favorites</string>
     <string name="articles_title">Articles</string>
+    <string name="articles_selection_title">Articles Selection</string>
+    <string name="articles_review_title">Articles Review</string>
 </resources>

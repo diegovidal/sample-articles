@@ -28,10 +28,26 @@ class ArticlesActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ativity_articles)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         injectDagger()
 
         if (savedInstanceState == null)
             inflateArticlesSelectionFragment()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager?.backStackEntryCount ?: 0 > 0)
+            super.onBackPressed()
+        else finish()
+    }
+
+    fun updateActionBarTitle(title: Int) {
+        supportActionBar?.setTitle(title)
     }
 
     private fun inflateArticlesSelectionFragment() {

@@ -9,16 +9,21 @@ sealed class StartViewModelContract {
 
     sealed class ViewState: StartViewModelContract() {
 
-        object StartArticlesLoading: ViewState()
         data class StartArticlesSuccess(val articlesInfoParam: ArticlesInfoParam): ViewState()
-
-        object ClearArticlesLoading: ViewState()
         object ClearArticlesSuccess: ViewState()
 
-        sealed class Warning: ViewState() {
 
-            data class StartArticlesError(val throwable: Throwable): ViewState()
-            data class ClearArticlesError(val throwable: Throwable): ViewState()
+
+        sealed class Loading: ViewState() {
+
+            object ClearArticlesLoading: Loading()
+            object StartArticlesLoading: Loading()
+        }
+
+        sealed class Warning(val throwable: Throwable): ViewState() {
+
+            data class StartArticlesError(val t: Throwable): Warning(t)
+            data class ClearArticlesError(val t: Throwable): Warning(t)
         }
     }
 }

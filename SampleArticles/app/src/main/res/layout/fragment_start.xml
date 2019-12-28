@@ -8,12 +8,8 @@
 
     <RelativeLayout
         android:id="@+id/bt_start_articles"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:textSize="24sp"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/default_button_selector">
+        style="@style/ButtonDefault"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/tv_start_articles"
@@ -36,11 +32,7 @@
 
     <RelativeLayout
         android:id="@+id/bt_clear_articles"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:padding="16dp"
-        android:textSize="24sp"
-        android:background="@drawable/default_button_selector">
+        style="@style/ButtonDefault">
 
         <TextView
             android:id="@+id/tv_clear_articles"
@@ -48,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             style="@style/ButtonDefaultText"
-            android:text="@string/start_articles_label" />
+            android:text="@string/clear_articles_label" />
 
         <ProgressBar
             android:id="@+id/pb_clear_articles"

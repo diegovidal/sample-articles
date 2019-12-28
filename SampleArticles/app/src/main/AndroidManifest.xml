@@ -15,14 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".features.start.presentation.StartActivity">
+        <activity android:name=".features.start.presentation.StartActivity"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.articles.presentation.ArticlesActivity" />
+        <activity
+            android:name=".features.articles.presentation.ArticlesActivity"
+            android:label="@string/articles_title"/>
     </application>
 
 </manifest>

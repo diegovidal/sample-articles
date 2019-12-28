@@ -9,4 +9,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+
+    <color name="shape_like">#a3cf62</color>
+    <color name="shape_dislike">#cc0000</color>
 </resources>

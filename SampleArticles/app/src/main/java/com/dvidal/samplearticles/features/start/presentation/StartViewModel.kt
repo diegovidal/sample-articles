@@ -39,7 +39,7 @@ class StartViewModel @Inject constructor(
 
     fun startArticles() {
 
-        _requestStartArticles.postValue(StartViewModelContract.ViewState.StartArticlesLoading)
+        _requestStartArticles.postValue(StartViewModelContract.ViewState.Loading.StartArticlesLoading)
         startArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, viewModelScope) {
             it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
         }
@@ -47,7 +47,7 @@ class StartViewModel @Inject constructor(
 
     fun clearArticles() {
 
-        _requestClearArticles.postValue(StartViewModelContract.ViewState.ClearArticlesLoading)
+        _requestClearArticles.postValue(StartViewModelContract.ViewState.Loading.ClearArticlesLoading)
         clearArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, viewModelScope) {
             it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
         }

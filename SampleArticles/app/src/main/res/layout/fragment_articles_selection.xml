@@ -30,22 +30,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageView
                 android:id="@+id/bt_like_article"
-                android:layout_width="48dp"
-                android:layout_height="38dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="16dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_done"
+                android:background="@drawable/shape_like"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_first_article"
                 app:layout_constraintEnd_toEndOf="@+id/iv_first_article" />
 
-            <Button
+            <ImageView
                 android:id="@+id/bt_dislike_article"
-                android:layout_width="48dp"
-                android:layout_height="38dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="16dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_close"
+                android:background="@drawable/shape_dislike"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_first_article"
                 app:layout_constraintStart_toStartOf="@+id/iv_first_article" />
 

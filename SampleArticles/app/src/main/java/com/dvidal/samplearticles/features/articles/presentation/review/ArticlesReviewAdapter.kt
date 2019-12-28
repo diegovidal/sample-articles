@@ -70,6 +70,8 @@ class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<Articles
                 itemView.tv_article_title.text = articleView.title
             }
 
+            itemView.iv_like_article.isVisible = articleView.isFavorite
+
         }
     }
 

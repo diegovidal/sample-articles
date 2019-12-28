@@ -45,13 +45,11 @@ class StartFragment : BaseFragment() {
     private fun handleViewStatesSingleLiveEvents(viewState: StartViewModelContract.ViewState?) {
 
         when (viewState) {
-            is StartViewModelContract.ViewState.StartArticlesLoading -> Timber.i("StartArticlesLoading")
-            is StartViewModelContract.ViewState.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(
-                viewState.articlesInfoParam
-            )
+            is StartViewModelContract.ViewState.StartArticlesLoading -> handleButton(false, viewState)
+            is StartViewModelContract.ViewState.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(viewState.articlesInfoParam)
             is StartViewModelContract.ViewState.Warning.StartArticlesError -> showToast(viewState.throwable.message)
 
-            is StartViewModelContract.ViewState.ClearArticlesLoading -> Timber.i("StartArticlesLoading")
+            is StartViewModelContract.ViewState.ClearArticlesLoading -> handleButton(false, viewState)
             is StartViewModelContract.ViewState.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
             is StartViewModelContract.ViewState.Warning.ClearArticlesError -> showToast(viewState.throwable.message)
         }
@@ -62,10 +60,11 @@ class StartFragment : BaseFragment() {
         when (viewState) {
 
             is StartViewModelContract.ViewState.StartArticlesLoading -> {
+                bt_start_articles.isEnabled = isEnabled
 
             }
             is StartViewModelContract.ViewState.ClearArticlesLoading -> {
-
+                bt_start_articles.isEnabled = isEnabled
             }
         }
     }

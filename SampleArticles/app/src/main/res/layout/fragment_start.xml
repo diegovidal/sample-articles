@@ -1,24 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <Button
+    <RelativeLayout
         android:id="@+id/bt_start_articles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Articles"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
         android:textSize="24sp"
         android:padding="16dp"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/default_button_selector">
 
-    <Button
+        <TextView
+            android:id="@+id/tv_start_articles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/ButtonDefaultText"
+            android:text="@string/start_articles_label" />
+
+        <ProgressBar
+            android:id="@+id/pb_start_articles"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/bt_clear_articles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear Articles"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
         android:padding="16dp"
-        android:textSize="24sp"/>
+        android:textSize="24sp"
+        android:background="@drawable/default_button_selector">
+
+        <TextView
+            android:id="@+id/tv_clear_articles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/ButtonDefaultText"
+            android:text="@string/start_articles_label" />
+
+        <ProgressBar
+            android:id="@+id/pb_clear_articles"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

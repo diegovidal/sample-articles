@@ -1,6 +1,7 @@
 package com.dvidal.samplearticles.features.articles.domain
 
 import androidx.lifecycle.LiveData
+import com.dvidal.samplearticles.BuildConfig
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
@@ -68,6 +69,6 @@ class ArticlesRepositoryImpl @Inject constructor(
 
     companion object {
 
-        const val NUM_ARTICLES = 10
+        const val NUM_ARTICLES = BuildConfig.NUM_ARTICLES
     }
 }

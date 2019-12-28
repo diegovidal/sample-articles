@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.core.di.module
 
+import com.dvidal.samplearticles.BuildConfig
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -17,12 +18,6 @@ import javax.inject.Singleton
  */
 @Module
 class RemoteModule {
-
-    companion object {
-
-        // TODO: REMOVE HARD CODE
-        private const val API_ENDPOINT = "https://api-mobile.home24.com/api/v2.0/"
-    }
 
     @Provides
     @Singleton
@@ -59,4 +54,8 @@ class RemoteModule {
         return retrofit.create(ArticlesRemoteApi::class.java)
     }
 
+    companion object {
+
+        private val API_ENDPOINT = BuildConfig.API_ENDPOINT
+    }
 }

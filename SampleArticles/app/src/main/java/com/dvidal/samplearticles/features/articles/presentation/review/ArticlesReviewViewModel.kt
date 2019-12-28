@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.articles.presentation.review
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,12 +20,15 @@ class ArticlesReviewViewModel @Inject constructor(
 ): BaseViewModel() {
 
     private val _fetchReviewedArticles = MutableLiveData<List<ArticleView>>()
-    val viewStatesLiveEvents = MediatorLiveData<ArticlesReviewViewModelContract.ViewState>().apply {
+    val fetchReviewedArticles = MediatorLiveData<ArticlesReviewViewModelContract.ViewState>().apply {
 
         addSource(_fetchReviewedArticles){
             postValue(ArticlesReviewViewModelContract.ViewState.ShowArticlesReview(it))
         }
     }
+
+    private val _switchGridLayout = MutableLiveData<ArticlesReviewViewModelContract.ViewState.SwitchGridLayout>(ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeList)
+    val switchGridLayout: LiveData<ArticlesReviewViewModelContract.ViewState.SwitchGridLayout> = _switchGridLayout
 
     fun fetchReviewedArticles() {
 
@@ -36,6 +40,19 @@ class ArticlesReviewViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun switchGridLayoutSpanCount() {
+
+        val newSwitchGrid = if (_switchGridLayout.value?.isTypeGrid() == true) ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeList
+            else ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeGrid
+
+        _switchGridLayout.postValue(newSwitchGrid)
+    }
+
+    fun refreshGridLayoutSpanCount() {
+
+        _switchGridLayout.postValue(switchGridLayout.value)
     }
 
     private fun handleFetchReviewedArticlesFailure(throwable: Throwable) {}

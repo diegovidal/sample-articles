@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">SampleArticles</string>
-    <string name="toast_articles_cleared">Articles Cleared.</string>
+    <string name="toast_articles_cleared">Articles Cleared</string>
     <string name="content_desc_article_image">article image</string>
     <string name="label_articles_info">you liked %1$d of %2$d articles</string>
+    <string name="item_menu_grid_type_title">Grid Type</string>
+    <string name="start_articles_label">Start Articles</string>
+    <string name="clear_articles_label">Clear Articles</string>
 </resources>

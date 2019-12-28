@@ -8,5 +8,5 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
  */
 interface ArticlesRemoteDataSource {
 
-    fun fetchAllArticles(numArticles: Int): EitherResult<List<ArticleView>>
+    suspend fun fetchAllArticles(numArticles: Int): EitherResult<List<ArticleView>>
 }

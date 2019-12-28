@@ -16,29 +16,29 @@ class ArticlesLocalDataSourceImpl @Inject constructor(
     private val appDatabase: AppDatabase
 ) : ArticlesLocalDataSource {
 
-    override fun insertAllArticles(listArticlesDto: List<ArticleDto>?): EitherResult<Unit> {
+    override suspend fun insertAllArticles(listArticlesDto: List<ArticleDto>?): EitherResult<Unit> {
         return catching { appDatabase.articlesDao().insertAllArticles(listArticlesDto) }
     }
 
-    override fun fetchAllArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchAllArticles(): EitherResult<List<ArticleView>> {
         return catching {
             appDatabase.articlesDao().fetchAllArticles().map { it.mapperToArticleView() }
         }
     }
 
-    override fun clearAllArticles(): EitherResult<Unit> {
+    override suspend fun clearAllArticles(): EitherResult<Unit> {
         return catching { appDatabase.articlesDao().clearAllArticles() }
     }
 
-    override fun reviewArticle(sku: String): EitherResult<Unit> {
+    override suspend fun reviewArticle(sku: String): EitherResult<Unit> {
         return catching { appDatabase.articlesDao().reviewArticle(sku) }
     }
 
-    override fun favoriteArticle(sku: String): EitherResult<Unit> {
+    override suspend fun favoriteArticle(sku: String): EitherResult<Unit> {
         return catching { appDatabase.articlesDao().favoriteArticle(sku) }
     }
 
-    override fun fetchFavoriteArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchFavoriteArticles(): EitherResult<List<ArticleView>> {
         return catching {
             appDatabase.articlesDao().fetchFavoriteArticles().map { it.mapperToArticleView() }
         }
@@ -50,7 +50,7 @@ class ArticlesLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
         return catching {
             appDatabase.articlesDao().fetchReviewedArticles().map { it.mapperToArticleView() }
         }

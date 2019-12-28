@@ -19,12 +19,12 @@ class ArticlesRepositoryImpl @Inject constructor(
     private val remoteDataSource: ArticlesRemoteDataSource
 ) : ArticlesRepository {
 
-    override fun insertAllArticles(list: List<ArticleView>?): EitherResult<Unit> {
+    override suspend fun insertAllArticles(list: List<ArticleView>?): EitherResult<Unit> {
         val articlesDto = list?.map { it.mapperToArticleDto() }
         return localDataSource.insertAllArticles(articlesDto)
     }
 
-    override fun fetchAllArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchAllArticles(): EitherResult<List<ArticleView>> {
 
         val localResult = localDataSource.fetchAllArticles()
         val localArticlesReviews = localResult.rightOrNull()
@@ -43,19 +43,19 @@ class ArticlesRepositoryImpl @Inject constructor(
         return Either.left(RemoteFailure.ErrorLoadingData())
     }
 
-    override fun clearAllArticles(): EitherResult<Unit> {
+    override suspend fun clearAllArticles(): EitherResult<Unit> {
         return localDataSource.clearAllArticles()
     }
 
-    override fun reviewArticle(sku: String): EitherResult<Unit> {
+    override suspend fun reviewArticle(sku: String): EitherResult<Unit> {
         return localDataSource.reviewArticle(sku)
     }
 
-    override fun favoriteArticle(sku: String): EitherResult<Unit> {
+    override suspend fun favoriteArticle(sku: String): EitherResult<Unit> {
         return localDataSource.favoriteArticle(sku)
     }
 
-    override fun fetchFavoriteArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchFavoriteArticles(): EitherResult<List<ArticleView>> {
         return localDataSource.fetchFavoriteArticles()
     }
 
@@ -63,7 +63,7 @@ class ArticlesRepositoryImpl @Inject constructor(
         return localDataSource.fetchUnreviewedArticles()
     }
 
-    override fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
+    override suspend fun fetchReviewedArticles(): EitherResult<List<ArticleView>> {
         return localDataSource.fetchReviewedArticles()
     }
 

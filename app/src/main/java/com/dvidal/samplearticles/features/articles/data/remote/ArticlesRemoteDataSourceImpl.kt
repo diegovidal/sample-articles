@@ -12,11 +12,14 @@ import javax.inject.Inject
 class ArticlesRemoteDataSourceImpl @Inject constructor(
     private val remoteApi: ArticlesRemoteApi,
     networkHandler: NetworkHandler
-): BaseRequester(networkHandler), ArticlesRemoteDataSource {
+) : BaseRequester(networkHandler), ArticlesRemoteDataSource {
 
-    override fun fetchAllArticles(numArticles: Int): EitherResult<List<ArticleView>> {
+    override suspend fun fetchAllArticles(numArticles: Int): EitherResult<List<ArticleView>> {
 
-        return request(remoteApi.fetchAllArticles(limit = numArticles), { response ->
-            response.embedded.articles.map { it.mapperToArticleView()}}, ArticlesRemoteResponse.empty())
+        return request(
+            apiCall = { remoteApi.fetchAllArticles(limit = numArticles) },
+            transform = { response -> response.embedded.articles.map { it.mapperToArticleView() } },
+            default = ArticlesRemoteResponse.empty()
+        )
     }
 }

@@ -10,20 +10,17 @@ abstract class BaseRequester(
         private val networkHandler: NetworkHandler
 ) {
 
-    fun <T, R> request(call: Call<T>, transform: (T) -> R, default: T): EitherResult<R> {
+    suspend fun <T, R> request(apiCall: suspend() -> T, transform: (T) -> R, default: T): EitherResult<R> {
         return when (networkHandler.isConnected) {
-            true -> requestHttp(call, transform, default)
+            true -> requestHttp(apiCall, transform, default)
             false, null -> EitherResult.left(RemoteFailure.NetworkConnection())
         }
     }
 
-    private fun <T, R> requestHttp(call: Call<T>, transform: (T) -> R, default: T): EitherResult<R> {
+    private suspend fun <T, R> requestHttp(apiCall: suspend() -> T, transform: (T) -> R, default: T): EitherResult<R> {
         return try {
-            val response = call.execute()
-            when (response.isSuccessful) {
-                true -> EitherResult.right(transform((response.body() ?: default)))
-                false -> EitherResult.left(RemoteFailure.NetworkConnection())
-            }
+            val response = apiCall.invoke()
+            EitherResult.right(transform((response ?: default)))
         } catch (exception: Throwable) {
             EitherResult.left(RemoteFailure.ServerError())
         }

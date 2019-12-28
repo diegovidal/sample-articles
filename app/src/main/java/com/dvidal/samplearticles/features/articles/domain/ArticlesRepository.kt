@@ -10,19 +10,19 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
  */
 interface ArticlesRepository {
 
-    fun insertAllArticles(list: List<ArticleView>?): EitherResult<Unit>
+    suspend fun insertAllArticles(list: List<ArticleView>?): EitherResult<Unit>
 
-    fun fetchAllArticles(): EitherResult<List<ArticleView>>
+    suspend fun fetchAllArticles(): EitherResult<List<ArticleView>>
 
-    fun clearAllArticles(): EitherResult<Unit>
+    suspend fun clearAllArticles(): EitherResult<Unit>
 
-    fun reviewArticle(sku: String): EitherResult<Unit>
+    suspend fun reviewArticle(sku: String): EitherResult<Unit>
 
-    fun favoriteArticle(sku: String): EitherResult<Unit>
+    suspend fun favoriteArticle(sku: String): EitherResult<Unit>
 
-    fun fetchFavoriteArticles(): EitherResult<List<ArticleView>>
+    suspend fun fetchFavoriteArticles(): EitherResult<List<ArticleView>>
 
     fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>>
 
-    fun fetchReviewedArticles(): EitherResult<List<ArticleView>>
+    suspend fun fetchReviewedArticles(): EitherResult<List<ArticleView>>
 }

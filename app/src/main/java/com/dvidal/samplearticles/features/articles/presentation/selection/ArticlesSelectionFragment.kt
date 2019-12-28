@@ -103,6 +103,7 @@ class ArticlesSelectionFragment : BaseFragment() {
         Glide
             .with(requireContext())
             .load(firstArticle.imageUrl)
+            .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(iv_first_article)
     }
@@ -113,6 +114,7 @@ class ArticlesSelectionFragment : BaseFragment() {
         Glide
             .with(requireContext())
             .load(lastArticle.imageUrl)
+            .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(iv_first_article)
     }

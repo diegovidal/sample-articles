@@ -61,6 +61,7 @@ class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<Articles
             Glide
                 .with(itemView.context)
                 .load(articleView.imageUrl)
+                .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .into(itemView.iv_article_review)
 

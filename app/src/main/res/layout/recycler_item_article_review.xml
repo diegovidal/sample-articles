@@ -32,9 +32,7 @@
         android:layout_height="20dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_like"
-        android:scaleType="center"
-        android:src="@drawable/ic_done"
+        android:background="@drawable/background_image_like"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

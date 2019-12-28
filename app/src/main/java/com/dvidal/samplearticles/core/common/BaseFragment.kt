@@ -21,7 +21,7 @@ abstract class BaseFragment: Fragment() {
         return inflater.inflate(layoutRes(), container, false)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         injectDagger()
     }

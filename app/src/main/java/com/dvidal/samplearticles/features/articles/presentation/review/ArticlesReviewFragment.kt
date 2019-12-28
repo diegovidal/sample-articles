@@ -61,16 +61,16 @@ class ArticlesReviewFragment : BaseFragment() {
         (activity as? ArticlesActivity)?.updateActionBarTitle(R.string.articles_review_title)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.grid_type, menu)
-        menuItem = menu?.findItem(R.id.grid_type)
+        inflater.inflate(R.menu.grid_type, menu)
+        menuItem = menu.findItem(R.id.grid_type)
         viewModel?.refreshGridLayoutSpanCount()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.grid_type -> viewModel?.switchGridLayoutSpanCount()
         }
         return super.onOptionsItemSelected(item)

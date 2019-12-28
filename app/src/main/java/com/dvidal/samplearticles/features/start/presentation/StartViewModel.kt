@@ -38,11 +38,10 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    val viewStatesLiveEvents = MediatorLiveData<StartViewModelContract.ViewState.Loading>().apply {
+    val viewStatesLiveEvents = MediatorLiveData<StartViewModelContract.ViewState>().apply {
 
         addSource(requestStartArticles){
-            if (it is StartViewModelContract.ViewState.Loading)
-                postValue(it)
+            postValue(it)
         }
     }
 

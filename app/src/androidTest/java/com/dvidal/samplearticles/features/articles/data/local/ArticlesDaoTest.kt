@@ -5,6 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -36,7 +39,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddTwoArticles_shouldReturnTwoArticles() {
+    fun whenAddTwoArticles_shouldReturnTwoArticles() = runBlocking {
         val article = ArticleDto("foo")
         val article2 = ArticleDto("foo2", "test")
 
@@ -47,7 +50,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleWithSameSku_shouldReplace() {
+    fun whenAddArticleWithSameSku_shouldReplace() = runBlocking {
 
         val titleArticle = "The Title"
 
@@ -61,7 +64,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticlesAndClear_shouldReturnEmpty() {
+    fun whenAddArticlesAndClear_shouldReturnEmpty() = runBlocking {
 
         val article = ArticleDto("foo")
         val article2 = ArticleDto("foo2", "test")
@@ -74,7 +77,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticle_shouldReturnIsReviewAsFalse() {
+    fun whenAddArticle_shouldReturnIsReviewAsFalse() = runBlocking {
 
         val foo = ArticleDto("foo")
 
@@ -87,7 +90,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleAndReview_shouldReturnIsReviewAsTrue() {
+    fun whenAddArticleAndReview_shouldReturnIsReviewAsTrue() = runBlocking {
 
         val foo = ArticleDto("foo")
 
@@ -101,7 +104,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticle_shouldReturnIsFavoriteAsFalse() {
+    fun whenAddArticle_shouldReturnIsFavoriteAsFalse() = runBlocking {
 
         val foo = ArticleDto("foo")
 
@@ -114,7 +117,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleAndFavorite_shouldReturnIsFavoriteAsTrue() {
+    fun whenAddArticleAndFavorite_shouldReturnIsFavoriteAsTrue() = runBlocking {
 
         val foo = ArticleDto("foo")
 
@@ -128,20 +131,24 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnEmpty() {
+    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnEmpty() = runBlocking {
 
         val foo = ArticleDto("foo")
 
         val list = listOf(foo)
         articlesDao.insertAllArticles(list)
         articlesDao.reviewArticle(foo.sku)
-        val articles = articlesDao.fetchUnreviewedArticles().value
+        val articles = articlesDao.fetchUnreviewedArticles()
 
-        assertEquals(0, articles?.size)
+        withContext(Dispatchers.Main) {
+            articles.observeForever {
+                assertEquals(0, it.size)
+            }
+        }
     }
 
     @Test
-    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnReviewedArticles() {
+    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnReviewedArticles() = runBlocking {
 
         val foo = ArticleDto("foo")
 
@@ -154,7 +161,7 @@ class ArticlesDaoTest {
     }
 
     @Test
-    fun whenAddArticleAndFavoriteAndFetchFavoriteArticles_shouldReturnFavoriteArticles() {
+    fun whenAddArticleAndFavoriteAndFetchFavoriteArticles_shouldReturnFavoriteArticles() = runBlocking {
 
         val foo = ArticleDto("foo")
 

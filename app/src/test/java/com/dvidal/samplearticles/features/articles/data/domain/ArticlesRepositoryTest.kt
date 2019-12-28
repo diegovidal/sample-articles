@@ -9,9 +9,8 @@ import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDat
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepositoryImpl
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -38,109 +37,107 @@ class ArticlesRepositoryTest {
     }
 
     @Test
-    fun `when fetch all articles and there are articles on local should return and call localDataSource fetch all articles`() {
+    fun `when fetch all articles and there are articles on local should return and call localDataSource fetch all articles`() = runBlocking {
 
         val articleView = ArticleView("foo")
         val list = listOf(articleView)
-        every { localDataSource.fetchAllArticles() } returns Either.right(list)
+        coEvery { localDataSource.fetchAllArticles() } returns Either.right(list)
 
         val articles = repository.fetchAllArticles().rightOrNull()
-        verify(exactly = 1) { localDataSource.fetchAllArticles() }
+        coVerify(exactly = 1) { localDataSource.fetchAllArticles() }
         Assert.assertEquals(list, articles)
     }
 
     @Test
-    fun `when fetch all articles and there are not articles on local should call remoteDataSource fetch all articles`() {
+    fun `when fetch all articles and there are not articles on local should call remoteDataSource fetch all articles`() = runBlocking {
 
         val foo = "foo"
-        val numArticles = 10
 
         val articleView = ArticleView(foo)
 
         val list = listOf(articleView)
-        every { localDataSource.fetchAllArticles() } returns Either.right(emptyList())
-        every { remoteDataSource.fetchAllArticles(numArticles) } returns Either.right(list)
+        coEvery { localDataSource.fetchAllArticles() } returns Either.right(emptyList())
+        coEvery { remoteDataSource.fetchAllArticles(any()) } returns Either.right(list)
 
         val listDto = listOf(articleView).map { it.mapperToArticleDto() }
-        every { localDataSource.insertAllArticles(listDto) } returns Either.right(Unit)
+        coEvery { localDataSource.insertAllArticles(listDto) } returns Either.right(Unit)
 
         repository.fetchAllArticles()
-        verify(exactly = 1) { remoteDataSource.fetchAllArticles(numArticles) }
-        verify(exactly = 2) { localDataSource.fetchAllArticles() }
+        coVerify(exactly = 1) { remoteDataSource.fetchAllArticles(any()) }
+        coVerify(exactly = 2) { localDataSource.fetchAllArticles() }
     }
 
     @Test
-    fun `when fetch all articles and there are not articles on local and error on insert on local should return ErrorLoadingData`() {
+    fun `when fetch all articles and there are not articles on local and error on insert on local should return ErrorLoadingData`() = runBlocking {
 
         val foo = "foo"
-        val numArticles = 10
         val remoteFailure = RemoteFailure.ErrorLoadingData()
 
         val articleView = ArticleView(foo)
 
         val list = listOf(articleView)
-        every { localDataSource.fetchAllArticles() } returns Either.right(emptyList())
-        every { remoteDataSource.fetchAllArticles(numArticles) } returns Either.right(list)
+        coEvery { localDataSource.fetchAllArticles() } returns Either.right(emptyList())
+        coEvery { remoteDataSource.fetchAllArticles(any()) } returns Either.right(list)
 
         val listDto = listOf(articleView).map { it.mapperToArticleDto() }
-        every { localDataSource.insertAllArticles(listDto) } returns Either.left(remoteFailure)
+        coEvery { localDataSource.insertAllArticles(listDto) } returns Either.left(remoteFailure)
 
         val error = repository.fetchAllArticles()
-        verify(exactly = 1) { remoteDataSource.fetchAllArticles(numArticles) }
-        verify(exactly = 1) { localDataSource.fetchAllArticles() }
+        coVerify(exactly = 1) { remoteDataSource.fetchAllArticles(any()) }
+        coVerify(exactly = 1) { localDataSource.fetchAllArticles() }
         assertTrue(error.isLeft)
     }
 
     @Test
-    fun `when insert all articles should call localDataSource insert all articles`() {
+    fun `when insert all articles should call localDataSource insert all articles`() = runBlocking {
 
         val list = listOf<ArticleView>()
         val listConverted = list.map { it.mapperToArticleDto() }
-        every { localDataSource.insertAllArticles(listConverted) } returns Either.right(Unit)
+        coEvery { localDataSource.insertAllArticles(listConverted) } returns Either.right(Unit)
 
         repository.insertAllArticles(list)
-        verify(exactly = 1) { localDataSource.insertAllArticles(listConverted) }
+        coVerify(exactly = 1) { localDataSource.insertAllArticles(listConverted) }
     }
 
     @Test
-    fun `when clear all articles should call localDataSource clear all articles`() {
+    fun `when clear all articles should call localDataSource clear all articles`() = runBlocking {
 
-        every { localDataSource.clearAllArticles() } returns Either.right(Unit)
+        coEvery { localDataSource.clearAllArticles() } returns Either.right(Unit)
 
         repository.clearAllArticles()
-        verify(exactly = 1) { localDataSource.clearAllArticles() }
+        coVerify(exactly = 1) { localDataSource.clearAllArticles() }
     }
 
     @Test
-    fun `when review article should call localDataSource review article`() {
+    fun `when review article should call localDataSource review article`() = runBlocking {
 
         val foo = "foo"
 
-        every { localDataSource.reviewArticle(foo) } returns Either.right(Unit)
+        coEvery { localDataSource.reviewArticle(foo) } returns Either.right(Unit)
 
         repository.reviewArticle(foo)
-        verify(exactly = 1) { localDataSource.reviewArticle(foo) }
+        coVerify(exactly = 1) { localDataSource.reviewArticle(foo) }
     }
 
     @Test
-    fun `when favorite article should call localDataSource favorite article`() {
+    fun `when favorite article should call localDataSource favorite article`() = runBlocking {
 
         val foo = "foo"
 
-        every { localDataSource.favoriteArticle(foo) } returns Either.right(Unit)
+        coEvery { localDataSource.favoriteArticle(foo) } returns Either.right(Unit)
 
         repository.favoriteArticle(foo)
-        verify(exactly = 1) { localDataSource.favoriteArticle(foo) }
+        coVerify(exactly = 1) { localDataSource.favoriteArticle(foo) }
     }
 
     @Test
-    fun `when fetch favorite articles should return and call localDataSource fetch favorite articles`() {
+    fun `when fetch favorite articles should return and call localDataSource fetch favorite articles`() = runBlocking {
 
         val list = listOf<ArticleView>()
-        every { localDataSource.fetchFavoriteArticles() } returns Either.right(list)
+        coEvery { localDataSource.fetchFavoriteArticles() } returns Either.right(list)
 
         val articles = repository.fetchFavoriteArticles().rightOrNull()
-        verify(exactly = 1) { localDataSource.fetchFavoriteArticles() }
+        coVerify(exactly = 1) { localDataSource.fetchFavoriteArticles() }
         Assert.assertEquals(list, articles)
     }
 
@@ -148,7 +145,7 @@ class ArticlesRepositoryTest {
     fun `when fetch unreviewed articles should return and call localDataSource fetch unreviewed articles`() {
 
         val list = listOf<ArticleDto>()
-        every { localDataSource.fetchUnreviewedArticles() } returns Either.right(MutableLiveData(list))
+        coEvery { localDataSource.fetchUnreviewedArticles() } returns Either.right(MutableLiveData(list))
 
         val articles = repository.fetchUnreviewedArticles().rightOrNull()?.value
         verify(exactly = 1) { localDataSource.fetchUnreviewedArticles() }
@@ -156,13 +153,13 @@ class ArticlesRepositoryTest {
     }
 
     @Test
-    fun `when fetch reviewed articles should return and call localDataSource fetch reviewed articles`() {
+    fun `when fetch reviewed articles should return and call localDataSource fetch reviewed articles`() = runBlocking {
 
         val list = listOf<ArticleView>()
-        every { localDataSource.fetchReviewedArticles() } returns Either.right(list)
+        coEvery { localDataSource.fetchReviewedArticles() } returns Either.right(list)
 
         val articles = repository.fetchReviewedArticles().rightOrNull()
-        verify(exactly = 1) { localDataSource.fetchReviewedArticles() }
+        coVerify(exactly = 1) { localDataSource.fetchReviewedArticles() }
         Assert.assertEquals(list, articles)
     }
 }

@@ -1,15 +1,11 @@
 package com.dvidal.samplearticles.features.articles.data.remote
 
 import com.dvidal.samplearticles.core.datasource.remote.NetworkHandler
-import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Call
-import retrofit2.Response
 
 /**
  * @author diegovidal on 2019-12-23.
@@ -19,7 +15,7 @@ class ArticlesRemoteDataSourceTest {
     private val remoteApi = mockk<ArticlesRemoteApi>()
     private val networkHandler = mockk<NetworkHandler>()
 
-    private val mockCall = mockk<Call<ArticlesRemoteResponse>>()
+    private val mockRemoteResponse = ArticlesRemoteResponse.empty()
 
     private lateinit var remoteDataSource: ArticlesRemoteDataSource
 
@@ -31,16 +27,15 @@ class ArticlesRemoteDataSourceTest {
     }
 
     @Test
-    fun `when fetch all articles should return and call remoteApi fetch all articles`() {
+    fun `when fetch all articles should return and call remoteApi fetch all articles`() = runBlocking {
 
         val numArticles = 10
 
         val remoteResponse = ArticlesRemoteResponse.empty()
-        every { mockCall.execute() } returns Response.success(remoteResponse)
-        every { remoteApi.fetchAllArticles(numArticles) } returns mockCall
+        coEvery { remoteApi.fetchAllArticles(numArticles) } returns mockRemoteResponse
 
         val expectedRemoteResponse = remoteDataSource.fetchAllArticles(numArticles).rightOrNull()
-        verify(exactly = 1) {remoteApi.fetchAllArticles(numArticles)}
+        coVerify(exactly = 1) {remoteApi.fetchAllArticles(numArticles)}
         assertEquals(expectedRemoteResponse, remoteResponse.embedded.articles)
     }
 }

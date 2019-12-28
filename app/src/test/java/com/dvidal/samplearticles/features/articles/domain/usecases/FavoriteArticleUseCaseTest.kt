@@ -4,9 +4,7 @@ import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -27,13 +25,13 @@ class FavoriteArticleUseCaseTest {
     }
 
     @Test
-    fun `when run use case should call repository fetch all articles`() {
+    fun `when run use case should call repository fetch all articles`() = runBlocking {
 
         val foo = "foo"
 
-        every { repository.favoriteArticle(foo) } returns Either.right(Unit)
+        coEvery { repository.favoriteArticle(foo) } returns Either.right(Unit)
 
-        runBlocking { useCase.run(foo) }
-        verify(exactly = 1) { repository.favoriteArticle(foo) }
+        useCase.run(foo)
+        coVerify(exactly = 1) { repository.favoriteArticle(foo) }
     }
 }

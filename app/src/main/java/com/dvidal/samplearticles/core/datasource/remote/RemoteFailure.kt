@@ -3,10 +3,10 @@ package com.dvidal.samplearticles.core.datasource.remote
 /**
  * @author diegovidal on 26/12/18.
  */
-sealed class RemoteFailure {
+sealed class RemoteFailure(errorMsg: String) : Throwable(errorMsg) {
 
-    class NetworkConnection : Throwable()
-    class ServerError : Throwable()
+    class NetworkConnection : RemoteFailure("Network Connection Error")
+    class ServerError : RemoteFailure("Server Error")
 
-    class ErrorLoadingData : Throwable()
+    class ErrorLoadingData : RemoteFailure("Error Loading Data")
 }

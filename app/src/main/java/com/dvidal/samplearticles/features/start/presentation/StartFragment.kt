@@ -9,7 +9,6 @@ import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_start.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -63,13 +62,18 @@ class StartFragment : BaseFragment() {
     private fun handleButton(viewState: StartViewModelContract.ViewState?) {
 
         tv_start_articles.text =
-            if (viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading) getString(R.string.loading_articles_label)
+            if (viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading) getString(
+                R.string.loading_articles_label
+            )
             else getString(R.string.start_articles_label)
 
-        bt_start_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading.StartArticlesLoading
-        pb_start_articles.isVisible = viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading
+        bt_start_articles.isEnabled =
+            viewState !is StartViewModelContract.ViewState.Loading.StartArticlesLoading
+        pb_start_articles.isVisible =
+            viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading
         bt_clear_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading
-        pb_clear_articles.isVisible = viewState is StartViewModelContract.ViewState.Loading.ClearArticlesLoading
+        pb_clear_articles.isVisible =
+            viewState is StartViewModelContract.ViewState.Loading.ClearArticlesLoading
     }
 
     private fun showToast(message: String?) {

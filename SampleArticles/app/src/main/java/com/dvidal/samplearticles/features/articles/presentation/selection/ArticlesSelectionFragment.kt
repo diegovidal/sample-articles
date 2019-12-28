@@ -126,6 +126,7 @@ class ArticlesSelectionFragment : BaseFragment() {
 
         content_view_articles.isVisible = isVisible
         empty_view.isVisible = !isVisible
+        pb_content_view.isVisible = false
     }
 
     private fun onClickToSeeReviews(v: View) {

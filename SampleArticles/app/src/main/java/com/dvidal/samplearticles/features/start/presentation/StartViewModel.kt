@@ -10,6 +10,7 @@ import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.domain.usecases.ClearArticlesUseCase
 import com.dvidal.samplearticles.features.start.domain.usecases.StartArticlesUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
 /**
@@ -34,6 +35,14 @@ class StartViewModel @Inject constructor(
 
         addSource(requestClearArticles){
             postValue(it)
+        }
+    }
+
+    val viewStatesLiveEvents = MediatorLiveData<StartViewModelContract.ViewState.Loading>().apply {
+
+        addSource(requestStartArticles){
+            if (it is StartViewModelContract.ViewState.Loading)
+                postValue(it)
         }
     }
 

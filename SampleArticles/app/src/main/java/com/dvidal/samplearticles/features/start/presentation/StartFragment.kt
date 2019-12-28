@@ -35,6 +35,11 @@ class StartFragment : BaseFragment() {
             viewLifecycleOwner,
             Observer(::handleViewStatesSingleLiveEvents)
         )
+
+        viewModel?.viewStatesLiveEvents?.observe(
+            viewLifecycleOwner,
+            Observer(::handleButton)
+        )
     }
 
     private fun configureButtonsListener() {
@@ -63,7 +68,7 @@ class StartFragment : BaseFragment() {
 
         bt_start_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading.StartArticlesLoading
         pb_start_articles.isVisible = viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading
-        bt_clear_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading.ClearArticlesLoading
+        bt_clear_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading
         pb_clear_articles.isVisible = viewState is StartViewModelContract.ViewState.Loading.ClearArticlesLoading
     }
 

@@ -14,6 +14,7 @@
             android:id="@+id/content_view_articles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:padding="16dp">
 
             <ImageView
@@ -72,5 +73,11 @@
         android:id="@+id/empty_view"
         layout="@layout/empty_view_articles_selection"
         android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pb_content_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </FrameLayout>

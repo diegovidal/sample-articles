@@ -2,7 +2,6 @@ package com.dvidal.samplearticles.core.common
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -18,8 +17,10 @@ abstract class UseCase<out Type, in Params> where Type : Any? {
 
     abstract suspend fun run(params: Params): EitherResult<Type>
 
-    operator fun invoke(params: Params, coroutineDispatcher: CoroutineDispatcher, coroutineScope: CoroutineScope,
-                        onResult: (EitherResult<Type>) -> Unit = {}) {
+    operator fun invoke(
+        params: Params, coroutineDispatcher: CoroutineDispatcher, coroutineScope: CoroutineScope,
+        onResult: (EitherResult<Type>) -> Unit = {}
+    ) {
 
         coroutineScope.launch(coroutineDispatcher) {
             onResult(run(params))

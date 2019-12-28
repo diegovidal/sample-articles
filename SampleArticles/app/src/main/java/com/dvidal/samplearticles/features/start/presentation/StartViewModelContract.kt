@@ -12,8 +12,6 @@ sealed class StartViewModelContract {
         data class StartArticlesSuccess(val articlesInfoParam: ArticlesInfoParam): ViewState()
         object ClearArticlesSuccess: ViewState()
 
-
-
         sealed class Loading: ViewState() {
 
             object ClearArticlesLoading: Loading()

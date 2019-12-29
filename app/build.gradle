@@ -15,7 +15,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "API_ENDPOINT", "\"https://api-mobile.home24.com/api/v2.0/\""
-        buildConfigField "int", "NUM_ARTICLES", "15"
+        buildConfigField "int", "NUM_ARTICLES", "16"
     }
 
     buildTypes {

@@ -13,4 +13,6 @@
     <string name="articles_title">Articles</string>
     <string name="articles_selection_title">Articles Selection</string>
     <string name="articles_review_title">Articles Review</string>
+    <string name="content_desc_article_review_image">Article Review Image</string>
+    <string name="content_description_favorite_image">Favorite Image</string>
 </resources>

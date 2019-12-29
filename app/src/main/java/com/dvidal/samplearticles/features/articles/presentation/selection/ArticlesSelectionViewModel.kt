@@ -11,6 +11,7 @@ import com.dvidal.samplearticles.features.articles.domain.usecases.FetchUnreview
 import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticleUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +20,7 @@ import javax.inject.Inject
  * @author diegovidal on 2019-12-25.
  */
 class ArticlesSelectionViewModel @Inject constructor(
+    private val coroutineDispatcher: CoroutineDispatcher,
     private val fetchUnreviewedArticlesUseCase: FetchUnreviewedArticlesUseCase,
     private val reviewArticleUseCase: ReviewArticleUseCase
 ) : BaseViewModel() {
@@ -54,9 +56,13 @@ class ArticlesSelectionViewModel @Inject constructor(
 
         this.articlesInfoParam = articlesInfoParam
         fetchUnreviewedArticles.notLet {
-            fetchUnreviewedArticlesUseCase.invoke(UseCase.None(), Dispatchers.IO, viewModelScope) {
+            fetchUnreviewedArticlesUseCase.invoke(
+                UseCase.None(),
+                coroutineDispatcher,
+                viewModelScope
+            ) {
                 it.either(
-                    ::handleFetchUnreviewedArticlesFailure,
+                    ::handleFailure,
                     ::handleFetchUnreviewedArticlesSuccess
                 )
             }
@@ -68,7 +74,7 @@ class ArticlesSelectionViewModel @Inject constructor(
         fetchUnreviewedArticles.value?.firstOrNull()?.sku?.let { firstArticle ->
             userInteraction.sku = firstArticle
 
-            reviewArticleUseCase.invoke(userInteraction, Dispatchers.IO, viewModelScope) {
+            reviewArticleUseCase.invoke(userInteraction, coroutineDispatcher, viewModelScope) {
                 it.either(::handleFailure) { handleReviewArticleSuccess(userInteraction) }
             }
         }
@@ -77,10 +83,6 @@ class ArticlesSelectionViewModel @Inject constructor(
     private fun handleReviewArticleSuccess(userInteraction: ArticlesSelectionViewModelContract.UserInteraction) {
         if (userInteraction is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle)
             articlesInfoParam?.incrementFavorite()
-    }
-
-    private fun handleFetchUnreviewedArticlesFailure(throwable: Throwable) {
-
     }
 
     private fun handleFetchUnreviewedArticlesSuccess(list: LiveData<List<ArticleDto>>) {

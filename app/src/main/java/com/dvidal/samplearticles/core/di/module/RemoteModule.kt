@@ -56,6 +56,6 @@ class RemoteModule {
 
     companion object {
 
-        private val API_ENDPOINT = BuildConfig.API_ENDPOINT
+        private const val API_ENDPOINT = BuildConfig.API_ENDPOINT
     }
 }

@@ -1,5 +1,6 @@
 package com.dvidal.samplearticles.features.articles.presentation.selection
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,7 +26,7 @@ class ArticlesSelectionViewModel @Inject constructor(
     private val reviewArticleUseCase: ReviewArticleUseCase
 ) : BaseViewModel() {
 
-    private val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
+    @VisibleForTesting val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
     private var articlesInfoParam: ArticlesInfoParam? = null
 
     val viewStatesLiveEvents =

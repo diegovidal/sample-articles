@@ -2,6 +2,8 @@ package com.dvidal.samplearticles.features.start.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dvidal.samplearticles.core.common.EitherResult
+import com.dvidal.samplearticles.features.articles.presentation.ArticleView
+import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.domain.usecases.ClearArticlesUseCase
 import com.dvidal.samplearticles.features.start.domain.usecases.StartArticlesUseCase
 import com.dvidal.samplearticles.features.utils.getOrAwaitValue
@@ -9,6 +11,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -64,14 +68,36 @@ class StartViewModelTest {
     }
 
     @Test
-    fun `when clear articles and error should return a ClearArticlesError`() {
+    fun `when start articles and success should return a StartArticlesSuccess with correspondent articlesInfoParam`() = runBlocking {
+
+        val list = listOf<ArticleView>()
+        val articlesInfoParam = ArticlesInfoParam.calculateArticlesInfoParam(list)
+        coEvery { startArticlesUseCase.invoke(any()) } returns EitherResult.right(list)
+
+        viewModel.startArticles()
+        delay(1000)
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) == StartViewModelContract.ViewState.StartArticlesSuccess(articlesInfoParam))
+    }
+
+    @Test
+    fun `when clear articles and error should return a ClearArticlesError`() = runBlocking {
 
         val throwable = Throwable()
         coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.left(Throwable(throwable))
 
         viewModel.clearArticles()
-
+        delay(1000)
         assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewModelContract.ViewState.Warning.ClearArticlesError)
+    }
+
+    @Test
+    fun `when clear articles and success should return a ClearArticlesError`() = runBlocking {
+
+        coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.right(Unit)
+
+        viewModel.clearArticles()
+        delay(1000)
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewModelContract.ViewState.ClearArticlesSuccess)
     }
 
     @Test

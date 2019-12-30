@@ -43,7 +43,7 @@ class ArticlesReviewViewModel @Inject constructor(
 
             viewModelScope.launch(coroutineDispatcher) {
                 fetchReviewedArticlesUseCase.invoke(UseCase.None()).also {
-                    it.either(::handleFetchReviewedArticlesFailure, ::handleFetchReviewedArticlesSuccess)
+                    it.either(::handleFailure, ::handleFetchReviewedArticlesSuccess)
                 }
             }
         }
@@ -62,8 +62,6 @@ class ArticlesReviewViewModel @Inject constructor(
 
         _switchGridLayout.postValue(switchGridLayout.value)
     }
-
-    private fun handleFetchReviewedArticlesFailure(throwable: Throwable) {}
 
     private fun handleFetchReviewedArticlesSuccess(list: List<ArticleView>) {
         _fetchReviewedArticles.postValue(list)

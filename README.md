@@ -10,6 +10,9 @@ Explore the project master branch and packages to see how it works. The project 
 ### Overview
 The `app` module is the main entry.
 
+# Planning
+![Screenshot](planning_image.jpeg)
+
 ### Features organization
 
 I have organized my code by feature. This avoid to share knowledge between feature without is required.

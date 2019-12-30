@@ -56,15 +56,11 @@ class ArticlesSelectionViewModel @Inject constructor(
 
         this.articlesInfoParam = articlesInfoParam
         fetchUnreviewedArticles.notLet {
-            fetchUnreviewedArticlesUseCase.invoke(
-                UseCase.None(),
-                coroutineDispatcher,
-                viewModelScope
-            ) {
-                it.either(
-                    ::handleFailure,
-                    ::handleFetchUnreviewedArticlesSuccess
-                )
+
+            viewModelScope.launch(coroutineDispatcher) {
+                fetchUnreviewedArticlesUseCase.invoke(UseCase.None()).also {
+                    it.either(::handleFailure, ::handleFetchUnreviewedArticlesSuccess)
+                }
             }
         }
     }
@@ -74,8 +70,10 @@ class ArticlesSelectionViewModel @Inject constructor(
         fetchUnreviewedArticles.value?.firstOrNull()?.sku?.let { firstArticle ->
             userInteraction.sku = firstArticle
 
-            reviewArticleUseCase.invoke(userInteraction, coroutineDispatcher, viewModelScope) {
-                it.either(::handleFailure) { handleReviewArticleSuccess(userInteraction) }
+            viewModelScope.launch(coroutineDispatcher) {
+                reviewArticleUseCase.invoke(userInteraction).also {
+                    it.either(::handleFailure) {handleReviewArticleSuccess(userInteraction)}
+                }
             }
         }
     }

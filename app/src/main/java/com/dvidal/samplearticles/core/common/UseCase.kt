@@ -1,9 +1,5 @@
 package com.dvidal.samplearticles.core.common
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).
@@ -17,14 +13,9 @@ abstract class UseCase<out Type, in Params> where Type : Any? {
 
     abstract suspend fun run(params: Params): EitherResult<Type>
 
-    operator fun invoke(
-        params: Params, coroutineDispatcher: CoroutineDispatcher, coroutineScope: CoroutineScope,
-        onResult: (EitherResult<Type>) -> Unit = {}
-    ) {
+    suspend operator fun invoke(params: Params): EitherResult<Type> {
 
-        coroutineScope.launch(coroutineDispatcher) {
-            onResult(run(params))
-        }
+        return run(params)
     }
 
     class None

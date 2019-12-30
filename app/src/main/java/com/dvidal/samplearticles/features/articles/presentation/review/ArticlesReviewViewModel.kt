@@ -10,6 +10,7 @@ import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchReviewedArticlesUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -39,15 +40,11 @@ class ArticlesReviewViewModel @Inject constructor(
     fun fetchReviewedArticles() {
 
         _fetchReviewedArticles.notLet {
-            fetchReviewedArticlesUseCase.invoke(
-                UseCase.None(),
-                coroutineDispatcher,
-                viewModelScope
-            ) {
-                it.either(
-                    ::handleFetchReviewedArticlesFailure,
-                    ::handleFetchReviewedArticlesSuccess
-                )
+
+            viewModelScope.launch(coroutineDispatcher) {
+                fetchReviewedArticlesUseCase.invoke(UseCase.None()).also {
+                    it.either(::handleFetchReviewedArticlesFailure, ::handleFetchReviewedArticlesSuccess)
+                }
             }
         }
     }

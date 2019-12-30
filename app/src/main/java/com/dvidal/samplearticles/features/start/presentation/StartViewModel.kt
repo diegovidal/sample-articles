@@ -12,6 +12,7 @@ import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.domain.usecases.ClearArticlesUseCase
 import com.dvidal.samplearticles.features.start.domain.usecases.StartArticlesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -52,16 +53,20 @@ class StartViewModel @Inject constructor(
     fun startArticles() {
 
         _requestStartArticles.postValue(StartViewModelContract.ViewState.Loading.StartArticlesLoading)
-        startArticlesUseCase.invoke(UseCase.None(), coroutineDispatcher, viewModelScope) {
-            it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
+        viewModelScope.launch(coroutineDispatcher) {
+            startArticlesUseCase.invoke(UseCase.None()).also {
+                it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
+            }
         }
     }
 
     fun clearArticles() {
 
         _requestClearArticles.postValue(StartViewModelContract.ViewState.Loading.ClearArticlesLoading)
-        clearArticlesUseCase.invoke(UseCase.None(), coroutineDispatcher, viewModelScope) {
-            it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
+        viewModelScope.launch(coroutineDispatcher) {
+            clearArticlesUseCase.invoke(UseCase.None()).also {
+                it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
+            }
         }
     }
 
@@ -84,7 +89,7 @@ class StartViewModel @Inject constructor(
     }
 
     private fun handleClearArticlesFailure(failure: Throwable) {
-        _requestStartArticles.postValue(
+        _requestClearArticles.postValue(
             StartViewModelContract.ViewState.Warning.ClearArticlesError(
                 failure
             )
@@ -92,6 +97,6 @@ class StartViewModel @Inject constructor(
     }
 
     private fun handleClearArticlesSuccess(unit: Unit) {
-        _requestStartArticles.postValue(StartViewModelContract.ViewState.ClearArticlesSuccess)
+        _requestClearArticles.postValue(StartViewModelContract.ViewState.ClearArticlesSuccess)
     }
 }

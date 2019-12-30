@@ -70,10 +70,12 @@ dependencies {
 
     // Unit Testing
     testImplementation unitTestDependencies.junit
-    testImplementation unitTestDependencies.mockito
+    testImplementation unitTestDependencies.mockk
+    testImplementation unitTestDependencies.archCore
 
     // Integration Testing
     androidTestImplementation integrationTestDependencies.extJunit
-    androidTestImplementation integrationTestDependencies.mockito
+    androidTestImplementation integrationTestDependencies.mockk
     androidTestImplementation integrationTestDependencies.espresso
+    androidTestImplementation integrationTestDependencies.archCore
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author diegovidal on 2019-12-23.
@@ -22,7 +23,7 @@ interface ArticlesRepository {
 
     suspend fun fetchFavoriteArticles(): EitherResult<List<ArticleView>>
 
-    fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>>
+    fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>>
 
     suspend fun fetchReviewedArticles(): EitherResult<List<ArticleView>>
 }

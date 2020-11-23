@@ -8,6 +8,7 @@ import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +32,8 @@ class FetchUnreviewedArticlesUseCaseTest {
     fun `when run use case should call repository fetch all articles`() {
 
         val list = listOf(ArticleDto("foo"))
-        every { repository.fetchUnreviewedArticles() } returns Either.right(MutableLiveData(list))
+        val flowList = flow { emit(list) }
+        every { repository.fetchUnreviewedArticles() } returns Either.right(flowList)
 
         runBlocking { useCase.run(UseCase.None()) }
         verify(exactly = 1) { repository.fetchUnreviewedArticles() }

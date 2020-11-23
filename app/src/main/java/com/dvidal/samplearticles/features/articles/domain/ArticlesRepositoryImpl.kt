@@ -9,6 +9,7 @@ import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.data.local.ArticlesLocalDataSource
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDataSource
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -59,7 +60,7 @@ class ArticlesRepositoryImpl @Inject constructor(
         return localDataSource.fetchFavoriteArticles()
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>> {
+    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>> {
         return localDataSource.fetchUnreviewedArticles()
     }
 

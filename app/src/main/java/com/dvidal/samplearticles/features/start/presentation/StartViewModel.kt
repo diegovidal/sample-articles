@@ -51,7 +51,7 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun startArticles() {
+    private fun startArticles() {
 
         _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = true, isClearArticlesLoading = false))
         viewModelScope.launch(coroutineDispatcher) {
@@ -62,7 +62,7 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun clearArticles() {
+    private fun clearArticles() {
 
         _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = false, isClearArticlesLoading = true))
         viewModelScope.launch(coroutineDispatcher) {

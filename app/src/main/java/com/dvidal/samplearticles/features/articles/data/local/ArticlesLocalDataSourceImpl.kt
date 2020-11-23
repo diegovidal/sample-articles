@@ -1,11 +1,10 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
-import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.common.catching
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import dagger.Reusable
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -44,7 +43,7 @@ class ArticlesLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<LiveData<List<ArticleDto>>> {
+    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>> {
         return catching {
             appDatabase.articlesDao().fetchUnreviewedArticles()
         }

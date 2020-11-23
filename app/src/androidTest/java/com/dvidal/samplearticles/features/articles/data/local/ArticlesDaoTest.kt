@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.junit.After
@@ -141,7 +142,7 @@ class ArticlesDaoTest {
         val articles = articlesDao.fetchUnreviewedArticles()
 
         withContext(Dispatchers.Main) {
-            articles.observeForever {
+            articles.collect {
                 assertEquals(0, it.size)
             }
         }

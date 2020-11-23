@@ -1,8 +1,8 @@
 package com.dvidal.samplearticles.features.articles.presentation.selection
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.BaseViewModel
 import com.dvidal.samplearticles.core.common.UseCase
@@ -13,7 +13,7 @@ import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticle
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -84,11 +84,11 @@ class ArticlesSelectionViewModel @Inject constructor(
             articlesInfoParam?.incrementFavorite()
     }
 
-    private fun handleFetchUnreviewedArticlesSuccess(list: LiveData<List<ArticleDto>>) {
+    private fun handleFetchUnreviewedArticlesSuccess(list: Flow<List<ArticleDto>>) {
 
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(coroutineDispatcher) {
             fetchUnreviewedArticles.apply {
-                addSource(list) {
+                addSource(list.asLiveData()) {
                     val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
                     postValue(listConverted)
                 }

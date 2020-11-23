@@ -1,10 +1,10 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author diegovidal on 2019-12-18.
@@ -32,7 +32,7 @@ interface ArticlesDao {
     suspend fun fetchFavoriteArticles(): List<ArticleDto>
 
     @Query("SELECT * FROM articledto WHERE isReview = 0")
-    fun fetchUnreviewedArticles(): LiveData<List<ArticleDto>>
+    fun fetchUnreviewedArticles(): Flow<List<ArticleDto>>
 
     @Query("SELECT * FROM articledto WHERE isReview = 1")
     suspend fun fetchReviewedArticles(): List<ArticleDto>

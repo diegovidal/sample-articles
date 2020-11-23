@@ -10,6 +10,7 @@ import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepositoryImpl
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import io.mockk.*
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Assert.assertTrue
@@ -145,9 +146,10 @@ class ArticlesRepositoryTest {
     fun `when fetch unreviewed articles should return and call localDataSource fetch unreviewed articles`() {
 
         val list = listOf<ArticleDto>()
-        coEvery { localDataSource.fetchUnreviewedArticles() } returns Either.right(MutableLiveData(list))
+        val flowList = flow { emit(list) }
+        coEvery { localDataSource.fetchUnreviewedArticles() } returns Either.right(flowList)
 
-        val articles = repository.fetchUnreviewedArticles().rightOrNull()?.value
+        val articles = repository.fetchUnreviewedArticles().rightOrNull()
         verify(exactly = 1) { localDataSource.fetchUnreviewedArticles() }
         Assert.assertEquals(list, articles)
     }

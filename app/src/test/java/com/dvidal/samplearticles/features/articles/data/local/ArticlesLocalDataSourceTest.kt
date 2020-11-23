@@ -3,6 +3,7 @@ package com.dvidal.samplearticles.features.articles.data.local
 import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import io.mockk.*
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -89,9 +90,10 @@ class ArticlesLocalDataSourceTest {
     fun `when fetch unreviewed articles should return and call articlesDao fetch unreviewed articles`() {
 
         val list = listOf<ArticleDto>()
-        every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns MutableLiveData(list)
+        val flowList = flow { emit(list) }
+        every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns flowList
 
-        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()?.value
+        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()
         verify(exactly = 1) {appDatabase.articlesDao().fetchUnreviewedArticles()}
         assertEquals(list, articles)
     }

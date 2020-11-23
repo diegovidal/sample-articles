@@ -20,6 +20,7 @@ sealed class ArticlesSelectionViewContract {
     sealed class Action {
 
         data class InitPage(var articlesInfoParam: ArticlesInfoParam): Action()
+        object NavigateToArticleReviews: Action()
 
         sealed class ReviewArticle(var sku: String): Action() {
 
@@ -36,5 +37,8 @@ sealed class ArticlesSelectionViewContract {
         data class ArticlesSelectionEmpty(val aip: ArticlesInfoParam?): State(aip)
     }
 
-    sealed class Event
+    sealed class Event {
+
+        object GoToArticleReviews: Event()
+    }
 }

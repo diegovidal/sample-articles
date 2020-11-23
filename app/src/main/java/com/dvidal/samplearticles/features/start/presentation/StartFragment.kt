@@ -31,14 +31,8 @@ class StartFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureButtonsListener()
 
-        viewModel.startViewStates.observe(
-            viewLifecycleOwner,
-            Observer(::handleViewStates)
-        )
-        viewModel.startViewEvents.observe(
-            viewLifecycleOwner,
-            Observer(::handleViewEvents)
-        )
+        viewModel.startViewStates.observe(viewLifecycleOwner, Observer(::handleViewStates))
+        viewModel.startViewEvents.observe(viewLifecycleOwner, Observer(::handleViewEvents))
     }
 
     private fun configureButtonsListener() {
@@ -50,9 +44,7 @@ class StartFragment : BaseFragment() {
     private fun handleViewEvents(viewState: StartViewContract.Event) {
 
         when (viewState) {
-            is StartViewContract.Event.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(
-                viewState.articlesInfoParam
-            )
+            is StartViewContract.Event.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(viewState.articlesInfoParam)
             is StartViewContract.Event.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
             is StartViewContract.Event.DisplayWarning -> showToast(viewState.throwable.message)
         }
@@ -61,10 +53,9 @@ class StartFragment : BaseFragment() {
     private fun handleViewStates(viewState: StartViewContract.State) {
 
         if (viewState is StartViewContract.State.StartViewState) {
-            tv_start_articles.text =
-                if (viewState.isStartArticlesLoading) getString(
-                    R.string.loading_articles_label
-                ) else getString(R.string.start_articles_label)
+            tv_start_articles.text = if (viewState.isStartArticlesLoading) getString(
+                R.string.loading_articles_label
+            ) else getString(R.string.start_articles_label)
 
             bt_start_articles.isEnabled = !viewState.isStartArticlesLoading
             pb_start_articles.isVisible = viewState.isStartArticlesLoading
@@ -76,5 +67,10 @@ class StartFragment : BaseFragment() {
 
     private fun showToast(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+
+        fun newInstance() = StartFragment()
     }
 }

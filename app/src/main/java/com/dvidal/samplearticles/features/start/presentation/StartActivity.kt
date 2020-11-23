@@ -22,6 +22,9 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         injectDagger()
+
+        if (savedInstanceState == null)
+            navigator.inflateStartFragment(this)
     }
 
     fun goToArticlesActivity(articlesInfoParam: ArticlesInfoParam) {

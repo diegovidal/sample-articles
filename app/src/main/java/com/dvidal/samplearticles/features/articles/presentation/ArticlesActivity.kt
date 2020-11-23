@@ -41,7 +41,7 @@ class ArticlesActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager?.backStackEntryCount ?: 0 > 0)
+        if (supportFragmentManager.backStackEntryCount > 0)
             super.onBackPressed()
         else finish()
     }

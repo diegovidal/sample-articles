@@ -13,7 +13,6 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
-import com.dvidal.samplearticles.features.start.presentation.StartViewModel
 import kotlinx.android.synthetic.main.empty_view_articles_selection.*
 import kotlinx.android.synthetic.main.fragment_articles_selection.*
 import timber.log.Timber
@@ -43,14 +42,10 @@ class ArticlesSelectionFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureButtonsListener()
 
-        configureButtons()
-        viewModel.articlesSelectionViewStates.observe(
-            viewLifecycleOwner,
-            Observer(::handleViewStatesLiveEvents)
-        )
-
-        viewModel.articlesSelectionViewEvents.observe(viewLifecycleOwner, Observer {  })
+        viewModel.articlesSelectionViewStates.observe(viewLifecycleOwner, Observer(::handleViewStates))
+        viewModel.articlesSelectionViewEvents.observe(viewLifecycleOwner, Observer (::handleViewEvents))
     }
 
     override fun onResume() {
@@ -58,7 +53,7 @@ class ArticlesSelectionFragment : BaseFragment() {
         (activity as? ArticlesActivity)?.updateActionBarTitle(R.string.articles_selection_title)
     }
 
-    private fun configureButtons() {
+    private fun configureButtonsListener() {
 
         bt_like_article.setOnClickListener {
             viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle())
@@ -66,13 +61,14 @@ class ArticlesSelectionFragment : BaseFragment() {
         bt_dislike_article.setOnClickListener {
             viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle())
         }
-
-        bt_see_reviews.setOnClickListener(::onClickToSeeReviews)
+        bt_see_reviews.setOnClickListener {
+            viewModel.invokeAction(ArticlesSelectionViewContract.Action.NavigateToArticleReviews)
+        }
     }
 
-    private fun handleViewStatesLiveEvents(viewState: ArticlesSelectionViewContract.State?) {
+    private fun handleViewStates(viewState: ArticlesSelectionViewContract.State) {
 
-        refreshArticlesInfo(viewState?.articlesInfoParam)
+        refreshArticlesInfo(viewState.articlesInfoParam)
         when (viewState) {
 
             is ArticlesSelectionViewContract.State.ShowTwoArticlesOnQueue -> handleShowTwoArticlesOnQueue(
@@ -83,7 +79,13 @@ class ArticlesSelectionFragment : BaseFragment() {
                 viewState.lastArticle
             )
             is ArticlesSelectionViewContract.State.ArticlesSelectionEmpty -> handleArticlesSelectionEmpty()
-            else -> Timber.i("handleViewStatesLiveEvents else sentence.")
+        }
+    }
+
+    private fun handleViewEvents(events: ArticlesSelectionViewContract.Event) {
+
+        when(events) {
+            ArticlesSelectionViewContract.Event.GoToArticleReviews -> (activity as? ArticlesActivity)?.inflateArticlesReviewFragment()
         }
     }
 
@@ -130,11 +132,6 @@ class ArticlesSelectionFragment : BaseFragment() {
         content_view_articles.isVisible = isVisible
         empty_view.isVisible = !isVisible
         pb_content_view.isVisible = false
-    }
-
-    private fun onClickToSeeReviews(v: View) {
-
-        (activity as? ArticlesActivity)?.inflateArticlesReviewFragment()
     }
 
     companion object {

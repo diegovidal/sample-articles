@@ -58,7 +58,6 @@ class ArticlesSelectionViewModel @Inject constructor(
             }
         }
     }
-
     override val articlesSelectionViewStates: LiveData<ArticlesSelectionViewContract.State> = _articlesSelectionViewStates
 
     private val _articlesSelectionViewEvents = SingleLiveEvent<ArticlesSelectionViewContract.Event>().apply {
@@ -78,6 +77,7 @@ class ArticlesSelectionViewModel @Inject constructor(
             is ArticlesSelectionViewContract.Action.InitPage -> initArticlesSelectionScreen(action.articlesInfoParam)
             is ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle -> reviewArticleUseCase(action)
             is ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle -> reviewArticleUseCase(action)
+            is ArticlesSelectionViewContract.Action.NavigateToArticleReviews -> _articlesSelectionViewEvents.postValue(ArticlesSelectionViewContract.Event.GoToArticleReviews)
         }
     }
 

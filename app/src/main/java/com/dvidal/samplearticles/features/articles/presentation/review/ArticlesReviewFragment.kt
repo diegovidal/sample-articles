@@ -13,7 +13,6 @@ import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
-import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewModel
 import kotlinx.android.synthetic.main.fragment_articles_review.*
 import javax.inject.Inject
 
@@ -47,11 +46,7 @@ class ArticlesReviewFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView()
 
-        viewModel.articlesReviewViewStates.observe(
-            viewLifecycleOwner,
-            Observer(::handleViewStatesLiveEvents)
-        )
-
+        viewModel.articlesReviewViewStates.observe(viewLifecycleOwner, Observer(::handleViewStates))
         viewModel.articlesReviewViewEvents.observe(viewLifecycleOwner, Observer {  })
     }
 
@@ -82,7 +77,7 @@ class ArticlesReviewFragment : BaseFragment() {
         rv_articles_review.adapter = adapter
     }
 
-    private fun handleViewStatesLiveEvents(viewState: ArticlesReviewViewContract.State?) {
+    private fun handleViewStates(viewState: ArticlesReviewViewContract.State?) {
 
         when (viewState) {
             is ArticlesReviewViewContract.State.ShowArticlesReview -> {

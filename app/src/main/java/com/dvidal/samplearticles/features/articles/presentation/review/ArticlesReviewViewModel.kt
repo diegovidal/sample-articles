@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.BaseViewModel
+import com.dvidal.samplearticles.core.common.SingleLiveEvent
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchReviewedArticlesUseCase
@@ -19,27 +20,38 @@ import javax.inject.Inject
 class ArticlesReviewViewModel @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val fetchReviewedArticlesUseCase: FetchReviewedArticlesUseCase
-) : BaseViewModel() {
+) : BaseViewModel(), ArticlesReviewViewContract.ViewModelEvents {
 
-    private val _fetchReviewedArticles = MutableLiveData<List<ArticleView>>()
-    val fetchReviewedArticles =
-        MediatorLiveData<ArticlesReviewViewModelContract.ViewState>().apply {
+    private val _action = SingleLiveEvent<ArticlesReviewViewContract.Action>()
 
-            addSource(_fetchReviewedArticles) {
-                postValue(ArticlesReviewViewModelContract.ViewState.ShowArticlesReview(it))
-            }
+    private var articlesReviewView = ArticlesReviewView()
+
+    private val _articlesReviewViewStates = MutableLiveData<ArticlesReviewViewContract.State>()
+    override val articlesReviewViewStates: LiveData<ArticlesReviewViewContract.State> = _articlesReviewViewStates
+
+    private val _articlesReviewViewEvents = SingleLiveEvent<ArticlesReviewViewContract.Event>().apply {
+        addSource(_action) {
+            handleAction(it)
         }
+    }
+    override val articlesReviewViewEvents: LiveData<ArticlesReviewViewContract.Event> = _articlesReviewViewEvents
 
-    private val _switchGridLayout =
-        MutableLiveData<ArticlesReviewViewModelContract.ViewState.SwitchGridLayout>(
-            ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeList
-        )
-    val switchGridLayout: LiveData<ArticlesReviewViewModelContract.ViewState.SwitchGridLayout> =
-        _switchGridLayout
+    override fun invokeAction(action: ArticlesReviewViewContract.Action) {
+        _action.postValue(action)
+    }
 
-    fun fetchReviewedArticles() {
+    private fun handleAction(action: ArticlesReviewViewContract.Action) {
 
-        _fetchReviewedArticles.notLet {
+        when(action) {
+            ArticlesReviewViewContract.Action.InitPage -> fetchReviewedArticles()
+            ArticlesReviewViewContract.Action.RefreshGridLayoutSpanCount -> refreshGridLayoutSpanCount()
+            ArticlesReviewViewContract.Action.SwitchGridLayoutSpanCount -> switchGridLayoutSpanCount()
+        }
+    }
+
+    private fun fetchReviewedArticles() {
+
+        _articlesReviewViewStates.notLet {
 
             viewModelScope.launch(coroutineDispatcher) {
                 fetchReviewedArticlesUseCase.invoke(UseCase.None()).also {
@@ -49,21 +61,25 @@ class ArticlesReviewViewModel @Inject constructor(
         }
     }
 
-    fun switchGridLayoutSpanCount() {
+    private fun refreshGridLayoutSpanCount() {
 
-        val newSwitchGrid =
-            if (_switchGridLayout.value?.isTypeGrid() == true) ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeList
-            else ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeGrid
-
-        _switchGridLayout.postValue(newSwitchGrid)
+        _articlesReviewViewStates.let {
+            _articlesReviewViewStates.postValue(ArticlesReviewViewContract.State.ShowArticlesReview(articlesReviewView))
+        }
     }
 
-    fun refreshGridLayoutSpanCount() {
+    private fun switchGridLayoutSpanCount() {
 
-        _switchGridLayout.postValue(switchGridLayout.value)
+        val newSwitchGrid =
+            if (articlesReviewView.switchGridLayout.isTypeGrid()) SwitchGridLayout.SwitchGridLayoutTypeList
+            else SwitchGridLayout.SwitchGridLayoutTypeGrid
+
+        articlesReviewView.switchGridLayout = newSwitchGrid
+        _articlesReviewViewStates.postValue(ArticlesReviewViewContract.State.ShowArticlesReview(articlesReviewView))
     }
 
     private fun handleFetchReviewedArticlesSuccess(list: List<ArticleView>) {
-        _fetchReviewedArticles.postValue(list)
+        articlesReviewView.list = list
+        _articlesReviewViewStates.postValue(ArticlesReviewViewContract.State.ShowArticlesReview(articlesReviewView))
     }
 }

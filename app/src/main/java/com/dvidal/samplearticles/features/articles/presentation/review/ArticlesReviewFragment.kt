@@ -6,12 +6,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
+import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewModel
 import kotlinx.android.synthetic.main.fragment_articles_review.*
 import javax.inject.Inject
 
@@ -28,8 +30,8 @@ class ArticlesReviewFragment : BaseFragment() {
 
     private var menuItem: MenuItem? = null
 
-    private val viewModel by lazy {
-        viewModelFactory.get<ArticlesReviewViewModel>(this)
+    private val viewModel: ArticlesReviewViewContract.ViewModelEvents by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ArticlesReviewViewModel::class.java)
     }
 
     override fun layoutRes() = R.layout.fragment_articles_review
@@ -37,7 +39,7 @@ class ArticlesReviewFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel?.fetchReviewedArticles()
+        viewModel.invokeAction(ArticlesReviewViewContract.Action.InitPage)
         setHasOptionsMenu(true)
     }
 
@@ -45,15 +47,12 @@ class ArticlesReviewFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView()
 
-        viewModel?.fetchReviewedArticles?.observe(
+        viewModel.articlesReviewViewStates.observe(
             viewLifecycleOwner,
             Observer(::handleViewStatesLiveEvents)
         )
 
-        viewModel?.switchGridLayout?.observe(
-            viewLifecycleOwner,
-            Observer(::handleViewStatesLiveEvents)
-        )
+        viewModel.articlesReviewViewEvents.observe(viewLifecycleOwner, Observer {  })
     }
 
     override fun onResume() {
@@ -65,13 +64,13 @@ class ArticlesReviewFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.grid_type, menu)
         menuItem = menu.findItem(R.id.grid_type)
-        viewModel?.refreshGridLayoutSpanCount()
+        viewModel.invokeAction(ArticlesReviewViewContract.Action.RefreshGridLayoutSpanCount)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.grid_type -> viewModel?.switchGridLayoutSpanCount()
+            R.id.grid_type -> viewModel.invokeAction(ArticlesReviewViewContract.Action.SwitchGridLayoutSpanCount)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -83,27 +82,21 @@ class ArticlesReviewFragment : BaseFragment() {
         rv_articles_review.adapter = adapter
     }
 
-    private fun handleViewStatesLiveEvents(viewState: ArticlesReviewViewModelContract.ViewState?) {
+    private fun handleViewStatesLiveEvents(viewState: ArticlesReviewViewContract.State?) {
 
         when (viewState) {
-            is ArticlesReviewViewModelContract.ViewState.ShowArticlesReview -> adapter.updateDataSet(
-                viewState.list
-            )
-            is ArticlesReviewViewModelContract.ViewState.SwitchGridLayout -> {
+            is ArticlesReviewViewContract.State.ShowArticlesReview -> {
 
-                val manager = rv_articles_review.layoutManager as GridLayoutManager
-                manager.spanCount = viewState.spanCount
-                manager.requestLayout()
-                (rv_articles_review.adapter as? ArticlesReviewAdapter)?.switchGridLayoutSpanCount(
-                    viewState
-                )
-                updateDrawableMenuItem(viewState.drawable)
+                val manager = rv_articles_review.layoutManager as? GridLayoutManager
+                manager?.spanCount = viewState.articlesReviewView.switchGridLayout.spanCount
+                manager?.requestLayout()
+                adapter.updateDataSet(viewState.articlesReviewView.list, viewState.articlesReviewView.switchGridLayout)
+                updateDrawableMenuItem(viewState.articlesReviewView.switchGridLayout.drawable)
             }
         }
     }
 
     private fun updateDrawableMenuItem(drawable: Int) {
-
         menuItem?.setIcon(drawable)
     }
 

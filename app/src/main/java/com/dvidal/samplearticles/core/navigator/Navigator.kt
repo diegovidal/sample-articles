@@ -22,17 +22,17 @@ class Navigator @Inject constructor(){
 
         val articlesInfoParam = activity.intent.extras?.getParcelable(StartActivity.EXTRA_ARTICLES_INFO_PARAM) as? ArticlesInfoParam
 
-        activity.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.frame_content, ArticlesSelectionFragment.newInstance(articlesInfoParam))
-            ?.commit()
+        activity.supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_content, ArticlesSelectionFragment.newInstance(articlesInfoParam))
+            .commit()
     }
 
     fun inflateArticlesReviewFragment(activity: AppCompatActivity) {
 
-        activity.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.frame_content, ArticlesReviewFragment.newInstance())
-            ?.addToBackStack(ArticlesReviewFragment.ARTICLES_REVIEW_FRAGMENT_TAG)
-            ?.commit()
+        activity.supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_content, ArticlesReviewFragment.newInstance())
+            .addToBackStack(ArticlesReviewFragment.ARTICLES_REVIEW_FRAGMENT_TAG)
+            .commit()
     }
 
     fun goToArticlesActivity(activity: AppCompatActivity, articlesInfoParam: ArticlesInfoParam) {

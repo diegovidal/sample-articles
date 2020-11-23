@@ -20,13 +20,12 @@ import javax.inject.Inject
 class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<ArticlesReviewAdapter.ArticleReviewViewHolder>() {
 
     private var dataSet = emptyList<ArticleView>()
+    private var switchGridLayout: SwitchGridLayout = SwitchGridLayout.SwitchGridLayoutTypeList
 
-    private var switchGridLayout: ArticlesReviewViewModelContract.ViewState.SwitchGridLayout
-            = ArticlesReviewViewModelContract.ViewState.SwitchGridLayout.SwitchGridLayoutTypeList
-
-    fun updateDataSet(list: List<ArticleView>) {
+    fun updateDataSet(list: List<ArticleView>, switchGridLayout: SwitchGridLayout) {
 
         this.dataSet = list
+        this.switchGridLayout = switchGridLayout
         notifyDataSetChanged()
     }
 
@@ -36,11 +35,6 @@ class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<Articles
             .inflate(R.layout.recycler_item_article_review, parent, false)
 
         return ArticleReviewViewHolder(itemView)
-    }
-
-    fun switchGridLayoutSpanCount(switchGridLayout: ArticlesReviewViewModelContract.ViewState.SwitchGridLayout) {
-        this.switchGridLayout = switchGridLayout
-        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -65,14 +59,12 @@ class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<Articles
                 .centerCrop()
                 .into(itemView.iv_article_review)
 
-
             itemView.tv_article_title.isVisible = switchGridLayout.isTypeList()
             if (switchGridLayout.isTypeList()) {
                 itemView.tv_article_title.text = articleView.title
             }
 
             itemView.iv_like_article.isVisible = articleView.isFavorite
-
         }
     }
 

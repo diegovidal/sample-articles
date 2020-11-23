@@ -26,9 +26,7 @@ class StartViewModel @Inject constructor(
 
     private val _action = SingleLiveEvent<StartViewContract.Action>()
 
-    private val _startViewStates = MediatorLiveData<StartViewContract.State>().apply {
-
-    }
+    private val _startViewStates = MediatorLiveData<StartViewContract.State>()
     override val startViewStates: LiveData<StartViewContract.State> = _startViewStates
 
     private val _startViewEvents = SingleLiveEvent<StartViewContract.Event>().apply {
@@ -55,20 +53,22 @@ class StartViewModel @Inject constructor(
 
     fun startArticles() {
 
-        _startViewStates.postValue(StartViewContract.State.StartViewState(true, false))
+        _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = true, isClearArticlesLoading = false))
         viewModelScope.launch(coroutineDispatcher) {
             startArticlesUseCase.invoke(UseCase.None()).also {
                 it.either(::handleStartArticlesFailure, ::handleStartArticlesSuccess)
+                _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = false, isClearArticlesLoading = false))
             }
         }
     }
 
     fun clearArticles() {
 
-        _startViewStates.postValue(StartViewContract.State.StartViewState(false, true))
+        _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = false, isClearArticlesLoading = true))
         viewModelScope.launch(coroutineDispatcher) {
             clearArticlesUseCase.invoke(UseCase.None()).also {
                 it.either(::handleClearArticlesFailure, ::handleClearArticlesSuccess)
+                _startViewStates.postValue(StartViewContract.State.StartViewState(isStartArticlesLoading = false, isClearArticlesLoading = false))
             }
         }
     }
@@ -76,19 +76,11 @@ class StartViewModel @Inject constructor(
     private fun handleStartArticlesSuccess(list: List<ArticleView>) {
 
         val articlesInfoParam = ArticlesInfoParam.calculateArticlesInfoParam(list)
-        _startViewEvents.postValue(
-            StartViewContract.Event.StartArticlesSuccess(
-                articlesInfoParam
-            )
-        )
+        _startViewEvents.postValue(StartViewContract.Event.StartArticlesSuccess(articlesInfoParam))
     }
 
     private fun handleStartArticlesFailure(failure: Throwable) {
-        _startViewEvents.postValue(
-            StartViewContract.Event.DisplayWarning(
-                failure
-            )
-        )
+        _startViewEvents.postValue(StartViewContract.Event.DisplayWarning(failure))
     }
 
     private fun handleClearArticlesSuccess(unit: Unit) {
@@ -96,10 +88,6 @@ class StartViewModel @Inject constructor(
     }
 
     private fun handleClearArticlesFailure(failure: Throwable) {
-        _startViewEvents.postValue(
-            StartViewContract.Event.DisplayWarning(
-                failure
-            )
-        )
+        _startViewEvents.postValue(StartViewContract.Event.DisplayWarning(failure))
     }
 }

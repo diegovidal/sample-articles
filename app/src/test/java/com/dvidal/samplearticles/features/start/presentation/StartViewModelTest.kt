@@ -64,7 +64,7 @@ class StartViewModelTest {
 
         viewModel.startArticles()
 
-        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewModelContract.ViewState.Warning.StartArticlesError)
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewContract.ViewState.Warning.StartArticlesError)
     }
 
     @Test
@@ -76,7 +76,7 @@ class StartViewModelTest {
 
         viewModel.startArticles()
         delay(1000)
-        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) == StartViewModelContract.ViewState.StartArticlesSuccess(articlesInfoParam))
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) == StartViewContract.ViewState.StartArticlesSuccess(articlesInfoParam))
     }
 
     @Test
@@ -87,7 +87,7 @@ class StartViewModelTest {
 
         viewModel.clearArticles()
         delay(1000)
-        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewModelContract.ViewState.Warning.ClearArticlesError)
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewContract.ViewState.Warning.ClearArticlesError)
     }
 
     @Test
@@ -97,7 +97,7 @@ class StartViewModelTest {
 
         viewModel.clearArticles()
         delay(1000)
-        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewModelContract.ViewState.ClearArticlesSuccess)
+        assert(viewModel.viewStatesSingleLiveEvents.getOrAwaitValue(3) is StartViewContract.ViewState.ClearArticlesSuccess)
     }
 
     @Test
@@ -105,7 +105,7 @@ class StartViewModelTest {
 
         viewModel.startArticles()
         viewModel.viewStatesLiveEvents.observeForever {
-            assertEquals(it, StartViewModelContract.ViewState.Loading.StartArticlesLoading)
+            assertEquals(it, StartViewContract.ViewState.Loading.StartArticlesLoading)
         }
     }
 
@@ -114,7 +114,7 @@ class StartViewModelTest {
 
         viewModel.startArticles()
         viewModel.viewStatesSingleLiveEvents.observeForever {
-            assertEquals(it, StartViewModelContract.ViewState.Loading.StartArticlesLoading)
+            assertEquals(it, StartViewContract.ViewState.Loading.StartArticlesLoading)
         }
     }
 
@@ -123,7 +123,7 @@ class StartViewModelTest {
 
         viewModel.clearArticles()
         viewModel.viewStatesSingleLiveEvents.observeForever {
-            assertEquals(it, StartViewModelContract.ViewState.Loading.ClearArticlesLoading)
+            assertEquals(it, StartViewContract.ViewState.Loading.ClearArticlesLoading)
         }
     }
 }

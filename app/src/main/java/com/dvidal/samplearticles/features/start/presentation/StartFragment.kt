@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
@@ -19,8 +20,8 @@ class StartFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy {
-        viewModelFactory.get<StartViewModel>(requireActivity())
+    private val viewModel: StartViewContract.ViewModelEvents by lazy {
+        ViewModelProvider(this, viewModelFactory).get(StartViewModel::class.java)
     }
 
     override fun layoutRes() = R.layout.fragment_start
@@ -30,50 +31,47 @@ class StartFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureButtonsListener()
 
-        viewModel?.viewStatesSingleLiveEvents?.observe(
+        viewModel.startViewStates.observe(
             viewLifecycleOwner,
-            Observer(::handleViewStatesSingleLiveEvents)
+            Observer(::handleViewStates)
         )
-
-        viewModel?.viewStatesLiveEvents?.observe(
+        viewModel.startViewEvents.observe(
             viewLifecycleOwner,
-            Observer(::handleButton)
+            Observer(::handleViewEvents)
         )
     }
 
     private fun configureButtonsListener() {
 
-        bt_start_articles.setOnClickListener { viewModel?.startArticles() }
-        bt_clear_articles.setOnClickListener { viewModel?.clearArticles() }
+        bt_start_articles.setOnClickListener { viewModel.invokeAction(StartViewContract.Action.StartArticles) }
+        bt_clear_articles.setOnClickListener { viewModel.invokeAction(StartViewContract.Action.ClearArticles) }
     }
 
-    private fun handleViewStatesSingleLiveEvents(viewState: StartViewModelContract.ViewState?) {
+    private fun handleViewEvents(viewState: StartViewContract.Event) {
 
-        handleButton(viewState)
         when (viewState) {
-            is StartViewModelContract.ViewState.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(
+            is StartViewContract.Event.StartArticlesSuccess -> (activity as? StartActivity)?.goToArticlesActivity(
                 viewState.articlesInfoParam
             )
-            is StartViewModelContract.ViewState.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
-            is StartViewModelContract.ViewState.Warning -> showToast(viewState.throwable.message)
+            is StartViewContract.Event.ClearArticlesSuccess -> showToast(getString(R.string.toast_articles_cleared))
+            is StartViewContract.Event.DisplayWarning -> showToast(viewState.throwable.message)
         }
     }
 
-    private fun handleButton(viewState: StartViewModelContract.ViewState?) {
+    private fun handleViewStates(viewState: StartViewContract.State) {
 
-        tv_start_articles.text =
-            if (viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading) getString(
-                R.string.loading_articles_label
-            )
-            else getString(R.string.start_articles_label)
+        if (viewState is StartViewContract.State.StartViewState) {
+            tv_start_articles.text =
+                if (viewState.isStartArticlesLoading) getString(
+                    R.string.loading_articles_label
+                ) else getString(R.string.start_articles_label)
 
-        bt_start_articles.isEnabled =
-            viewState !is StartViewModelContract.ViewState.Loading.StartArticlesLoading
-        pb_start_articles.isVisible =
-            viewState is StartViewModelContract.ViewState.Loading.StartArticlesLoading
-        bt_clear_articles.isEnabled = viewState !is StartViewModelContract.ViewState.Loading
-        pb_clear_articles.isVisible =
-            viewState is StartViewModelContract.ViewState.Loading.ClearArticlesLoading
+            bt_start_articles.isEnabled = !viewState.isStartArticlesLoading
+            pb_start_articles.isVisible = viewState.isStartArticlesLoading
+
+            bt_clear_articles.isEnabled = !viewState.isClearArticlesLoading
+            pb_clear_articles.isVisible = viewState.isClearArticlesLoading
+        }
     }
 
     private fun showToast(message: String?) {

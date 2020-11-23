@@ -4,13 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchReviewedArticlesUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import com.dvidal.samplearticles.features.start.presentation.StartViewModelContract
 import com.dvidal.samplearticles.features.utils.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule

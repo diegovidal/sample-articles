@@ -23,7 +23,7 @@ interface ArticlesRepository {
 
     suspend fun fetchFavoriteArticles(): EitherResult<List<ArticleView>>
 
-    fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>>
+    fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleView>>>
 
     suspend fun fetchReviewedArticles(): EitherResult<List<ArticleView>>
 }

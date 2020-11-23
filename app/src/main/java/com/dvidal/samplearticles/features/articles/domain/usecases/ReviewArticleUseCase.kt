@@ -3,8 +3,7 @@ package com.dvidal.samplearticles.features.articles.domain.usecases
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
-import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewModelContract
+import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewContract
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -15,11 +14,11 @@ import javax.inject.Inject
 class ReviewArticleUseCase @Inject constructor(
     private val repository: ArticlesRepository,
     private val favoriteArticleUseCase: FavoriteArticleUseCase
-): UseCase<Unit, ArticlesSelectionViewModelContract.UserInteraction>() {
+): UseCase<Unit, ArticlesSelectionViewContract.Action.ReviewArticle>() {
 
-    override suspend fun run(params: ArticlesSelectionViewModelContract.UserInteraction): EitherResult<Unit> {
+    override suspend fun run(params: ArticlesSelectionViewContract.Action.ReviewArticle): EitherResult<Unit> {
 
-        if (params is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle)
+        if (params is ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle)
             favoriteArticleUseCase.run(params.sku)
 
         return repository.reviewArticle(params.sku)

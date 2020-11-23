@@ -145,7 +145,7 @@ class ArticlesRepositoryTest {
     @Test
     fun `when fetch unreviewed articles should return and call localDataSource fetch unreviewed articles`() {
 
-        val list = listOf<ArticleDto>()
+        val list = listOf<ArticleView>()
         val flowList = flow { emit(list) }
         coEvery { localDataSource.fetchUnreviewedArticles() } returns Either.right(flowList)
 

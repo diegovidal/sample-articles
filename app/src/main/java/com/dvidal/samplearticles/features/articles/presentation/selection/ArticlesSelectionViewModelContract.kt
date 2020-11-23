@@ -1,24 +1,40 @@
 package com.dvidal.samplearticles.features.articles.presentation.selection
 
+import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 
 /**
  * @author diegovidal on 2019-12-25.
  */
-sealed class ArticlesSelectionViewModelContract {
+sealed class ArticlesSelectionViewContract {
 
-    sealed class UserInteraction(var sku: String) {
+    interface ViewModelEvents {
 
-        data class LikeArticle(var param: String = ""): UserInteraction(param)
-        data class DislikeArticle(var param: String = ""): UserInteraction(param)
+        val articlesSelectionViewStates: LiveData<State>
+        val articlesSelectionViewEvents: LiveData<Event>
+
+        fun invokeAction(action: Action)
     }
 
-    sealed class ViewState(val articlesInfoParam: ArticlesInfoParam?): ArticlesSelectionViewModelContract() {
+    sealed class Action {
 
-        data class ShowTwoArticlesOnQueue(val aip: ArticlesInfoParam?, val firstArticle: ArticleView, val secondArticle: ArticleView): ViewState(aip)
-        data class ShowLastArticleOnQueue(val aip: ArticlesInfoParam?, val lastArticle: ArticleView): ViewState(aip)
+        data class InitPage(var articlesInfoParam: ArticlesInfoParam): Action()
 
-        data class ArticlesSelectionEmpty(val aip: ArticlesInfoParam?): ViewState(aip)
+        sealed class ReviewArticle(var sku: String): Action() {
+
+            data class LikeArticle(var param: String = ""): ReviewArticle(param)
+            data class DislikeArticle(var param: String = ""): ReviewArticle(param)
+        }
     }
+
+    sealed class State(val articlesInfoParam: ArticlesInfoParam?) {
+
+        data class ShowTwoArticlesOnQueue(val aip: ArticlesInfoParam?, val firstArticle: ArticleView, val secondArticle: ArticleView): State(aip)
+        data class ShowLastArticleOnQueue(val aip: ArticlesInfoParam?, val lastArticle: ArticleView): State(aip)
+
+        data class ArticlesSelectionEmpty(val aip: ArticlesInfoParam?): State(aip)
+    }
+
+    sealed class Event
 }

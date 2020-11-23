@@ -4,7 +4,7 @@ import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewModelContract
+import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionViewContract
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -30,7 +30,7 @@ class ReviewArticleUseCaseTest {
     fun `when run use case should call repository fetch all articles`() = runBlocking {
 
         val foo = "foo"
-        val userInteraction = ArticlesSelectionViewModelContract.UserInteraction.LikeArticle(foo)
+        val userInteraction = ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle(foo)
 
         coEvery { repository.reviewArticle(foo) } returns Either.right(Unit)
         coEvery { favoriteArticleUseCase.run(foo) } returns Either.right(Unit)

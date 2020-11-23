@@ -60,7 +60,7 @@ class ArticlesRepositoryImpl @Inject constructor(
         return localDataSource.fetchFavoriteArticles()
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>> {
+    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleView>>> {
         return localDataSource.fetchUnreviewedArticles()
     }
 

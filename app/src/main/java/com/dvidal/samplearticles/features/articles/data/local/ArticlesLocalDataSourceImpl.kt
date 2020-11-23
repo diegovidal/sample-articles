@@ -5,6 +5,7 @@ import com.dvidal.samplearticles.core.common.catching
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -43,9 +44,9 @@ class ArticlesLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleDto>>> {
+    override fun fetchUnreviewedArticles(): EitherResult<Flow<List<ArticleView>>> {
         return catching {
-            appDatabase.articlesDao().fetchUnreviewedArticles()
+            appDatabase.articlesDao().fetchUnreviewedArticles().map { it.map { articleDto -> articleDto.mapperToArticleView()  } }
         }
     }
 

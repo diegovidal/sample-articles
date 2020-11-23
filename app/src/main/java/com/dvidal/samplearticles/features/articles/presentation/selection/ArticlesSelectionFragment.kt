@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
@@ -12,6 +13,7 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
+import com.dvidal.samplearticles.features.start.presentation.StartViewModel
 import kotlinx.android.synthetic.main.empty_view_articles_selection.*
 import kotlinx.android.synthetic.main.fragment_articles_selection.*
 import timber.log.Timber
@@ -25,8 +27,8 @@ class ArticlesSelectionFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private val viewModel by lazy {
-        viewModelFactory.get<ArticlesSelectionViewModel>(this)
+    private val viewModel: ArticlesSelectionViewContract.ViewModelEvents by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ArticlesSelectionViewModel::class.java)
     }
 
     override fun layoutRes() = R.layout.fragment_articles_selection
@@ -35,7 +37,7 @@ class ArticlesSelectionFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getParcelable<ArticlesInfoParam>(EXTRA_ARTICLES_INFO_PARAM)?.let {
-            viewModel?.initArticlesSelectionScreen(it)
+            viewModel.invokeAction(ArticlesSelectionViewContract.Action.InitPage(it))
         }
     }
 
@@ -43,10 +45,12 @@ class ArticlesSelectionFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         configureButtons()
-        viewModel?.viewStatesLiveEvents?.observe(
+        viewModel.articlesSelectionViewStates.observe(
             viewLifecycleOwner,
             Observer(::handleViewStatesLiveEvents)
         )
+
+        viewModel.articlesSelectionViewEvents.observe(viewLifecycleOwner, Observer {  })
     }
 
     override fun onResume() {
@@ -57,31 +61,28 @@ class ArticlesSelectionFragment : BaseFragment() {
     private fun configureButtons() {
 
         bt_like_article.setOnClickListener {
-            viewModel?.reviewArticleUseCase(
-                ArticlesSelectionViewModelContract.UserInteraction.LikeArticle()
-            )
+            viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle())
         }
         bt_dislike_article.setOnClickListener {
-            viewModel?.reviewArticleUseCase(
-                ArticlesSelectionViewModelContract.UserInteraction.DislikeArticle()
-            )
+            viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle())
         }
+
         bt_see_reviews.setOnClickListener(::onClickToSeeReviews)
     }
 
-    private fun handleViewStatesLiveEvents(viewState: ArticlesSelectionViewModelContract.ViewState?) {
+    private fun handleViewStatesLiveEvents(viewState: ArticlesSelectionViewContract.State?) {
 
         refreshArticlesInfo(viewState?.articlesInfoParam)
         when (viewState) {
 
-            is ArticlesSelectionViewModelContract.ViewState.ShowTwoArticlesOnQueue -> handleShowTwoArticlesOnQueue(
+            is ArticlesSelectionViewContract.State.ShowTwoArticlesOnQueue -> handleShowTwoArticlesOnQueue(
                 viewState.firstArticle,
                 viewState.secondArticle
             )
-            is ArticlesSelectionViewModelContract.ViewState.ShowLastArticleOnQueue -> handleShowLastArticleOnQueue(
+            is ArticlesSelectionViewContract.State.ShowLastArticleOnQueue -> handleShowLastArticleOnQueue(
                 viewState.lastArticle
             )
-            is ArticlesSelectionViewModelContract.ViewState.ArticlesSelectionEmpty -> handleArticlesSelectionEmpty()
+            is ArticlesSelectionViewContract.State.ArticlesSelectionEmpty -> handleArticlesSelectionEmpty()
             else -> Timber.i("handleViewStatesLiveEvents else sentence.")
         }
     }

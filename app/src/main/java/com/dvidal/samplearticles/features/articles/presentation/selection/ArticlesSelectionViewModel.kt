@@ -1,10 +1,12 @@
 package com.dvidal.samplearticles.features.articles.presentation.selection
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.BaseViewModel
+import com.dvidal.samplearticles.core.common.SingleLiveEvent
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
@@ -26,36 +28,60 @@ class ArticlesSelectionViewModel @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val fetchUnreviewedArticlesUseCase: FetchUnreviewedArticlesUseCase,
     private val reviewArticleUseCase: ReviewArticleUseCase
-) : BaseViewModel() {
+) : BaseViewModel(), ArticlesSelectionViewContract.ViewModelEvents {
 
-    @VisibleForTesting val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
+    private val _action = SingleLiveEvent<ArticlesSelectionViewContract.Action>()
+
+    @VisibleForTesting
+    val fetchUnreviewedArticles = MediatorLiveData<List<ArticleView>>()
     private var articlesInfoParam: ArticlesInfoParam? = null
 
-    val viewStatesLiveEvents =
-        MediatorLiveData<ArticlesSelectionViewModelContract.ViewState>().apply {
+    private val _articlesSelectionViewStates = MediatorLiveData<ArticlesSelectionViewContract.State>().apply {
 
-            addSource(fetchUnreviewedArticles) {
-                when {
-                    it.isEmpty() -> postValue(
-                        ArticlesSelectionViewModelContract.ViewState.ArticlesSelectionEmpty(
-                            articlesInfoParam
-                        )
+        addSource(fetchUnreviewedArticles) {
+            when {
+                it.isEmpty() -> postValue(
+                    ArticlesSelectionViewContract.State.ArticlesSelectionEmpty(
+                        articlesInfoParam
                     )
-                    it.size == 1 -> postValue(
-                        ArticlesSelectionViewModelContract.ViewState.ShowLastArticleOnQueue(
-                            articlesInfoParam, it.first()
-                        )
+                )
+                it.size == 1 -> postValue(
+                    ArticlesSelectionViewContract.State.ShowLastArticleOnQueue(
+                        articlesInfoParam, it.first()
                     )
-                    it.size > 1 -> postValue(
-                        ArticlesSelectionViewModelContract.ViewState.ShowTwoArticlesOnQueue(
-                            articlesInfoParam, it[0], it[1]
-                        )
+                )
+                it.size > 1 -> postValue(
+                    ArticlesSelectionViewContract.State.ShowTwoArticlesOnQueue(
+                        articlesInfoParam, it[0], it[1]
                     )
-                }
+                )
             }
         }
+    }
 
-    fun initArticlesSelectionScreen(articlesInfoParam: ArticlesInfoParam) {
+    override val articlesSelectionViewStates: LiveData<ArticlesSelectionViewContract.State> = _articlesSelectionViewStates
+
+    private val _articlesSelectionViewEvents = SingleLiveEvent<ArticlesSelectionViewContract.Event>().apply {
+        addSource(_action) {
+            handleAction(it)
+        }
+    }
+    override val articlesSelectionViewEvents: LiveData<ArticlesSelectionViewContract.Event> = _articlesSelectionViewEvents
+
+    override fun invokeAction(action: ArticlesSelectionViewContract.Action) {
+        _action.postValue(action)
+    }
+
+    private fun handleAction(action: ArticlesSelectionViewContract.Action) {
+
+        when (action) {
+            is ArticlesSelectionViewContract.Action.InitPage -> initArticlesSelectionScreen(action.articlesInfoParam)
+            is ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle -> reviewArticleUseCase(action)
+            is ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle -> reviewArticleUseCase(action)
+        }
+    }
+
+    private fun initArticlesSelectionScreen(articlesInfoParam: ArticlesInfoParam) {
 
         this.articlesInfoParam = articlesInfoParam
         fetchUnreviewedArticles.notLet {
@@ -68,7 +94,7 @@ class ArticlesSelectionViewModel @Inject constructor(
         }
     }
 
-    fun reviewArticleUseCase(userInteraction: ArticlesSelectionViewModelContract.UserInteraction) {
+    private fun reviewArticleUseCase(userInteraction: ArticlesSelectionViewContract.Action.ReviewArticle) {
 
         fetchUnreviewedArticles.value?.firstOrNull()?.sku?.let { firstArticle ->
             userInteraction.sku = firstArticle
@@ -81,19 +107,18 @@ class ArticlesSelectionViewModel @Inject constructor(
         }
     }
 
-    private fun handleReviewArticleSuccess(userInteraction: ArticlesSelectionViewModelContract.UserInteraction) {
-        if (userInteraction is ArticlesSelectionViewModelContract.UserInteraction.LikeArticle)
+    private fun handleReviewArticleSuccess(userInteraction: ArticlesSelectionViewContract.Action) {
+        if (userInteraction is ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle)
             articlesInfoParam?.incrementFavorite()
     }
 
-    private fun handleFetchUnreviewedArticlesSuccess(list: Flow<List<ArticleDto>>) {
+    private fun handleFetchUnreviewedArticlesSuccess(list: Flow<List<ArticleView>>) {
 
         viewModelScope.launch(coroutineDispatcher) {
             fetchUnreviewedArticles.apply {
 
                 withContext(Dispatchers.Main) {
-                    addSource(list.asLiveData()) {
-                        val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
+                    addSource(list.asLiveData()) { listConverted ->
                         postValue(listConverted)
                     }
                 }

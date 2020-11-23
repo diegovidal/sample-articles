@@ -13,8 +13,10 @@ import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticle
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -73,7 +75,7 @@ class ArticlesSelectionViewModel @Inject constructor(
 
             viewModelScope.launch(coroutineDispatcher) {
                 reviewArticleUseCase.invoke(userInteraction).also {
-                    it.either(::handleFailure) {handleReviewArticleSuccess(userInteraction)}
+                    it.either(::handleFailure) { handleReviewArticleSuccess(userInteraction) }
                 }
             }
         }
@@ -88,9 +90,12 @@ class ArticlesSelectionViewModel @Inject constructor(
 
         viewModelScope.launch(coroutineDispatcher) {
             fetchUnreviewedArticles.apply {
-                addSource(list.asLiveData()) {
-                    val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
-                    postValue(listConverted)
+
+                withContext(Dispatchers.Main) {
+                    addSource(list.asLiveData()) {
+                        val listConverted = it.map { articleDto -> articleDto.mapperToArticleView() }
+                        postValue(listConverted)
+                    }
                 }
             }
         }

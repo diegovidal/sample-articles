@@ -37,13 +37,14 @@ class StartViewModelTest {
     private lateinit var viewModel: StartViewModel
 
     @Before
-    fun setup() {
+    fun setup() = coroutineRule.runBlocking {
 
         viewModel = StartViewModel(coroutineRule.testDispatcher, clearArticlesUseCase, startArticlesUseCase)
+        viewModel.startViewEvents.observeForever {  }
     }
 
     @Test
-    fun `when start articles should invoke startArticlesUseCase`() = coroutineRule.runBlocking {
+    fun `when invoke action StartArticles should invoke startArticlesUseCase`() = coroutineRule.runBlocking {
 
         coEvery { startArticlesUseCase.invoke(any()) } returns EitherResult.left(Throwable())
 
@@ -52,7 +53,7 @@ class StartViewModelTest {
     }
 
     @Test
-    fun `when clear articles should invoke clearArticlesUseCase`() = coroutineRule.runBlocking {
+    fun `when invoke action ClearArticles should invoke clearArticlesUseCase`() = coroutineRule.runBlocking {
 
         coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.left(Throwable())
 
@@ -61,35 +62,37 @@ class StartViewModelTest {
     }
 
     @Test
-    fun `when start articles and error should return a StartArticlesError`() = coroutineRule.runBlocking {
+    fun `when start articles and is error should return DisplayWarning`() = coroutineRule.runBlocking {
 
         val throwable = Throwable()
-        coEvery { startArticlesUseCase.invoke(any()) } returns EitherResult.left(Throwable(throwable))
+        coEvery { startArticlesUseCase.invoke(any()) } returns EitherResult.left(throwable)
 
         viewModel.invokeAction(StartViewContract.Action.StartArticles)
-
-        assert(viewModel.startViewEvents.getOrAwaitValue(3) is StartViewContract.Event.DisplayWarning)
+        val expected = StartViewContract.Event.DisplayWarning(throwable)
+        assertEquals(expected, viewModel.startViewEvents.getOrAwaitValue())
     }
 
     @Test
-    fun `when start articles and success should return a StartArticlesSuccess with correspondent articlesInfoParam`() = coroutineRule.runBlocking {
+    fun `when start articles and is success should return a StartArticlesSuccess with correspondent articlesInfoParam`() = coroutineRule.runBlocking {
 
         val list = listOf<ArticleView>()
         val articlesInfoParam = ArticlesInfoParam.calculateArticlesInfoParam(list)
         coEvery { startArticlesUseCase.invoke(any()) } returns EitherResult.right(list)
 
         viewModel.invokeAction(StartViewContract.Action.StartArticles)
-        assert(viewModel.startViewEvents.getOrAwaitValue(3) == StartViewContract.Event.StartArticlesSuccess(articlesInfoParam))
+        val expected = StartViewContract.Event.StartArticlesSuccess(articlesInfoParam)
+        assertEquals(expected , viewModel.startViewEvents.getOrAwaitValue())
     }
 
     @Test
-    fun `when clear articles and error should return a ClearArticlesError`() = coroutineRule.runBlocking {
+    fun `when clear articles and is error should return a DisplayWarning`() = coroutineRule.runBlocking {
 
         val throwable = Throwable()
-        coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.left(Throwable(throwable))
+        coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.left(throwable)
 
         viewModel.invokeAction(StartViewContract.Action.ClearArticles)
-        assert(viewModel.startViewEvents.getOrAwaitValue(3) == StartViewContract.Event.DisplayWarning(throwable))
+        val expected = StartViewContract.Event.DisplayWarning(throwable)
+        assertEquals(expected, viewModel.startViewEvents.getOrAwaitValue())
     }
 
     @Test
@@ -98,29 +101,20 @@ class StartViewModelTest {
         coEvery { clearArticlesUseCase.invoke(any()) } returns EitherResult.right(Unit)
 
         viewModel.invokeAction(StartViewContract.Action.ClearArticles)
-        assert(viewModel.startViewEvents.getOrAwaitValue(3) == StartViewContract.Event.ClearArticlesSuccess)
+        val expected = StartViewContract.Event.ClearArticlesSuccess
+        assertEquals(expected, viewModel.startViewEvents.getOrAwaitValue())
     }
 
     @Test
-    fun `when start articles should post value StartArticlesLoading on liveEvents`() = coroutineRule.runBlocking {
+    fun `when start articles should post value StartViewState with isStartArticlesLoading`() = coroutineRule.runBlocking {
 
         viewModel.invokeAction(StartViewContract.Action.StartArticles)
-        viewModel.startViewStates.observeForever {
-            assertEquals(it, StartViewContract.State.StartViewState(isStartArticlesLoading = true, isClearArticlesLoading = false))
-        }
+        val expected = StartViewContract.State.StartViewState(isStartArticlesLoading = true, isClearArticlesLoading = false)
+        assertEquals(expected, viewModel.startViewStates.getOrAwaitValue())
     }
 
     @Test
-    fun `when start articles should post value StartArticlesLoading on singleLiveEvents`() = coroutineRule.runBlocking {
-
-        viewModel.invokeAction(StartViewContract.Action.StartArticles)
-        viewModel.startViewStates.observeForever {
-            assertEquals(it, StartViewContract.State.StartViewState(isStartArticlesLoading = true, isClearArticlesLoading = false))
-        }
-    }
-
-    @Test
-    fun `when clear articles should post value ClearArticlesLoading on singleLiveEvents`() = coroutineRule.runBlocking {
+    fun `when clear articles should post value StartViewState with isClearArticlesLoading`() = coroutineRule.runBlocking {
 
         viewModel.invokeAction(StartViewContract.Action.ClearArticles)
         viewModel.startViewStates.observeForever {

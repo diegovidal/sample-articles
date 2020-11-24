@@ -15,7 +15,7 @@ The total amount of article should be easily configurable from gradle buildConfi
 ![Screenshot](planning_image.jpeg)
 
 # UI
-![Screenshot](ui1.png) ![Screenshot](ui1.png) ![Screenshot](ui1.png)
+![Screenshot](ui1.png) ![Screenshot](ui2.png) ![Screenshot](ui1.png)
 
 ### Features organization
 

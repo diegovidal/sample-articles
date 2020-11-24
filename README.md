@@ -14,6 +14,11 @@ The total amount of article should be easily configurable from gradle buildConfi
 # Planning
 ![Screenshot](planning_image.jpeg)
 
+# UI
+![Screenshot](ui1.png)
+![Screenshot](ui2.png)
+![Screenshot](ui3.png)
+
 ### Features organization
 
 I have organized my code by feature. This avoid to share knowledge between feature without is required.
@@ -25,7 +30,7 @@ I have organized my code by feature. This avoid to share knowledge between featu
   * Show articles not already reviewed 
   * Set as reviewed (isReview)
   * Set as favorite or not favorite (isFavorite)
-  * Verify if is all articles isReview
+  * Verify if all articles are isReview
   * Number of article isLike
   * Total number of articles
   * Go to ReviewScreen
@@ -33,9 +38,9 @@ I have organized my code by feature. This avoid to share knowledge between featu
   * Show all articles
   * All articles should be isReview
   * Verify if article isFavorite or not
-  * Switch between gridLayout with 1 or 2 colunms
+  * Switch between gridLayout with 1 or 2 columns
 
 # WARNING
 
-- Integration tests works only API 26 or greater.
+- Integration tests work only API 26 or greater.
 - Disabled animation.

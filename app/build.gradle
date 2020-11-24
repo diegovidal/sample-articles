@@ -34,8 +34,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    testOptions {
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
@@ -91,8 +91,6 @@ dependencies {
     androidTestImplementation integrationTestDependencies.testRules
     androidTestImplementation integrationTestDependencies.archCore
     androidTestImplementation applicationDependencies.dagger
-
-    androidTestUtil integrationTestDependencies.orchestrator
 
     kaptAndroidTest applicationDependencies.daggerCompiler
     kaptAndroidTest applicationDependencies.daggerProcessor

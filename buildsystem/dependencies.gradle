@@ -33,7 +33,6 @@ ext {
     extJunit_version = "1.1.1"
     espresso_version = "3.2.0"
     testRules_version = "1.3.0-alpha03"
-    orchestrator_version = "1.2.0"
 
     mainApplication = [
 
@@ -79,8 +78,7 @@ ext {
             espresso:           "androidx.test.espresso:espresso-core:$espresso_version",
             espressoContrib:    "androidx.test.espresso:espresso-contrib:$espresso_version",
             testRules:          "androidx.test:rules:$testRules_version",
-            archCore:           "androidx.arch.core:core-testing:$archCore_version",
-            orchestrator:       "androidx.test:orchestrator:$orchestrator_version"
+            archCore:           "androidx.arch.core:core-testing:$archCore_version"
     ]
 
 }

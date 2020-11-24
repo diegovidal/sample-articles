@@ -5,10 +5,11 @@ before another article will be presented. User will have a possibility to review
 pressing the relevant button.
 
 # Project structure
-Explore the project master branch and packages to see how it works. The project architecture is MVVM with Clean Architecture using SOLID concepts.
+Explore the project master branch and packages to see how it works. The project architecture is MVVM/MVI with Clean Architecture using SOLID concepts.
 
 ### Overview
 The `app` module is the main entry.
+The total amount of article should be easily configurable from gradle buildConfigField called NUM_ARTICLES.)
 
 # Planning
 ![Screenshot](planning_image.jpeg)
@@ -37,3 +38,4 @@ I have organized my code by feature. This avoid to share knowledge between featu
 # WARNING
 
 - Integration tests works only API 26 or greater.
+- Disabled animation.

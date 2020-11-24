@@ -2,6 +2,8 @@ package com.dvidal.samplearticles.features.articles.presentation.selection
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,15 +14,16 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.empty_view_articles_selection.bt_see_reviews
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_dislike_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_like_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.content_view_articles
 import kotlinx.android.synthetic.main.fragment_articles_selection.empty_view
 import kotlinx.android.synthetic.main.fragment_articles_selection.iv_first_article
+import kotlinx.android.synthetic.main.fragment_articles_selection.iv_second_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.pb_content_view
 import kotlinx.android.synthetic.main.fragment_articles_selection.tv_articles_info
+import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.
@@ -44,6 +47,11 @@ class ArticlesSelectionFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroy() {
+        iv_first_article?.clearAnimation()
+        super.onDestroy()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureButtonsListener()
@@ -60,14 +68,33 @@ class ArticlesSelectionFragment : BaseFragment() {
     private fun configureButtonsListener() {
 
         bt_like_article.setOnClickListener {
-            viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle())
+
+            handleAnimation(R.anim.anim_left_to_right) {
+                viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.LikeArticle())
+            }
         }
         bt_dislike_article.setOnClickListener {
-            viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle())
+
+            handleAnimation(R.anim.anim_right_to_left) {
+                viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle())
+            }
+
         }
         bt_see_reviews.setOnClickListener {
             viewModel.invokeAction(ArticlesSelectionViewContract.Action.NavigateToArticleReviews)
         }
+    }
+
+    private fun handleAnimation(anim: Int, invokeAction: () -> Unit) {
+
+        val animation = AnimationUtils.loadAnimation(context, anim)
+        iv_first_article.startAnimation(animation)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) { invokeAction() }
+            override fun onAnimationStart(animation: Animation?) {}
+        })
     }
 
     private fun handleViewStates(viewState: ArticlesSelectionViewContract.State) {
@@ -113,6 +140,13 @@ class ArticlesSelectionFragment : BaseFragment() {
             .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(iv_first_article)
+
+        Glide
+            .with(requireContext())
+            .load(secondArticle.imageUrl)
+            .placeholder(R.drawable.placeholder_image)
+            .centerCrop()
+            .into(iv_second_article)
     }
 
     private fun handleShowLastArticleOnQueue(lastArticle: ArticleView) {
@@ -124,6 +158,8 @@ class ArticlesSelectionFragment : BaseFragment() {
             .placeholder(R.drawable.placeholder_image)
             .centerCrop()
             .into(iv_first_article)
+
+        iv_second_article?.isVisible = false
     }
 
     private fun handleArticlesSelectionEmpty() {

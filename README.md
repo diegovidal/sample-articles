@@ -16,8 +16,8 @@ The total amount of article should be easily configurable from gradle buildConfi
 
 # UI
 ![Screenshot](ui1.png)
-![Screenshot](ui2.png)
-![Screenshot](ui3.png)
+![Screenshot](ui1.png)
+![Screenshot](ui1.png)
 
 ### Features organization
 

@@ -30,7 +30,6 @@ open class RecyclerViewMatcher {
                         String.format("%s (resource name not found)",
                             Integer.valueOf(recyclerViewId))
                     }
-
                 }
                 description.appendText("with id: $idDescription")
             }

@@ -14,7 +14,7 @@ class FragmentTestRule<F : Fragment>(private val mFragmentClass: Class<F>) : Act
 
         activity.runOnUiThread {
             try {
-                //Instantiate and insert the fragment into the container layout
+                // Instantiate and insert the fragment into the container layout
                 val manager = activity.supportFragmentManager
                 val transaction = manager.beginTransaction()
                 fragment = mFragmentClass.newInstance()

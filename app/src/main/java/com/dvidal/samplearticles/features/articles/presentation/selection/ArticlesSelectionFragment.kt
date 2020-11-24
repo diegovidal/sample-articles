@@ -12,6 +12,7 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.empty_view_articles_selection.bt_see_reviews
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_dislike_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_like_article
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_articles_selection.empty_view
 import kotlinx.android.synthetic.main.fragment_articles_selection.iv_first_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.pb_content_view
 import kotlinx.android.synthetic.main.fragment_articles_selection.tv_articles_info
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.
@@ -49,7 +49,7 @@ class ArticlesSelectionFragment : BaseFragment() {
         configureButtonsListener()
 
         viewModel.articlesSelectionViewStates.observe(viewLifecycleOwner, Observer(::handleViewStates))
-        viewModel.articlesSelectionViewEvents.observe(viewLifecycleOwner, Observer (::handleViewEvents))
+        viewModel.articlesSelectionViewEvents.observe(viewLifecycleOwner, Observer(::handleViewEvents))
     }
 
     override fun onResume() {
@@ -88,7 +88,7 @@ class ArticlesSelectionFragment : BaseFragment() {
 
     private fun handleViewEvents(events: ArticlesSelectionViewContract.Event) {
 
-        when(events) {
+        when (events) {
             ArticlesSelectionViewContract.Event.GoToArticleReviews -> (activity as? ArticlesActivity)?.inflateArticlesReviewFragment()
         }
     }

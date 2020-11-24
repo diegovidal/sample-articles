@@ -1,24 +1,17 @@
 package com.dvidal.samplearticles.features.articles.presentation.review
 
 import androidx.lifecycle.MutableLiveData
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dvidal.samplearticles.BaseEspressoTest
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import com.dvidal.samplearticles.features.start.presentation.StartViewContract
-import com.dvidal.samplearticles.features.start.presentation.StartViewModel
 import com.dvidal.samplearticles.utils.FragmentTestRule
 import com.dvidal.samplearticles.utils.RecyclerViewMatcher
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.android.synthetic.main.recycler_item_article_review.view.iv_like_article
-import kotlinx.android.synthetic.main.recycler_item_article_review.view.tv_article_title
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -27,7 +20,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ArticlesReviewFragmentTest: BaseEspressoTest() {
+class ArticlesReviewFragmentTest : BaseEspressoTest() {
 
     @get:Rule
     val fragmentRule = FragmentTestRule(ArticlesReviewFragment::class.java)

@@ -11,7 +11,7 @@ import javax.inject.Inject
 @Reusable
 class ClearArticlesUseCase @Inject constructor(
     private val repository: ArticlesRepository
-): UseCase<Unit, UseCase.None>() {
+) : UseCase<Unit, UseCase.None>() {
 
     override suspend fun run(params: None) = repository.clearAllArticles()
 }

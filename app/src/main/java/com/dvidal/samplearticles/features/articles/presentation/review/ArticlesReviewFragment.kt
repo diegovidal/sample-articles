@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
-import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
-import kotlinx.android.synthetic.main.fragment_articles_review.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_articles_review.rv_articles_review
 
 /**
  * @author diegovidal on 2019-12-25.
@@ -47,7 +46,7 @@ class ArticlesReviewFragment : BaseFragment() {
         configureRecyclerView()
 
         viewModel.articlesReviewViewStates.observe(viewLifecycleOwner, Observer(::handleViewStates))
-        viewModel.articlesReviewViewEvents.observe(viewLifecycleOwner, Observer {  })
+        viewModel.articlesReviewViewEvents.observe(viewLifecycleOwner, Observer { })
     }
 
     override fun onResume() {

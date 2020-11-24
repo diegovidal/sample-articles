@@ -20,7 +20,7 @@ import javax.inject.Singleton
     CoroutineDispatcherModule::class,
     ViewModelModule::class
 ])
-interface AppComponent: BaseAppComponent {
+interface AppComponent : BaseAppComponent {
 
     override fun activityComponent(): ActivityComponent.Builder
     override val viewModelFactor: ViewModelProvider.Factory

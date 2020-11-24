@@ -12,7 +12,7 @@ import javax.inject.Inject
 @Reusable
 class FetchReviewedArticlesUseCase @Inject constructor(
     private val repository: ArticlesRepository
-): UseCase<List<ArticleView>, UseCase.None>() {
+) : UseCase<List<ArticleView>, UseCase.None>() {
 
     override suspend fun run(params: None) = repository.fetchReviewedArticles()
 }

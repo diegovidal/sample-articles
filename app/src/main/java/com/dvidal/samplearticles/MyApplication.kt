@@ -9,7 +9,7 @@ import timber.log.Timber
 /**
  * @author diegovidal on 2019-12-18.
  */
-class MyApplication: Application(), BaseApplication {
+class MyApplication : Application(), BaseApplication {
 
     override val appComponent: BaseAppComponent by lazy {
         DaggerAppComponent
@@ -21,7 +21,7 @@ class MyApplication: Application(), BaseApplication {
     override fun onCreate() {
         super.onCreate()
 
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
     }

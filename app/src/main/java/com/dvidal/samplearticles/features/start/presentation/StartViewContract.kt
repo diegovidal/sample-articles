@@ -18,20 +18,20 @@ sealed class StartViewContract {
 
     sealed class Action {
 
-        object StartArticles: Action()
-        object ClearArticles: Action()
+        object StartArticles : Action()
+        object ClearArticles : Action()
     }
 
     sealed class State {
 
-        data class StartViewState(val isStartArticlesLoading: Boolean, val isClearArticlesLoading: Boolean): State()
+        data class StartViewState(val isStartArticlesLoading: Boolean, val isClearArticlesLoading: Boolean) : State()
     }
 
     sealed class Event {
 
-        data class StartArticlesSuccess(val articlesInfoParam: ArticlesInfoParam): Event()
-        object ClearArticlesSuccess: Event()
+        data class StartArticlesSuccess(val articlesInfoParam: ArticlesInfoParam) : Event()
+        object ClearArticlesSuccess : Event()
 
-        data class DisplayWarning(val throwable: Throwable): Event()
+        data class DisplayWarning(val throwable: Throwable) : Event()
     }
 }

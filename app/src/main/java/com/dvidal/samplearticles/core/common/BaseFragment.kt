@@ -12,7 +12,7 @@ import com.dvidal.samplearticles.BaseApplication
 /**
  * @author diegovidal on 14/12/18.
  */
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
 
     internal val component by lazy { (activity?.application as BaseApplication).appComponent.activityComponent().build() }
 

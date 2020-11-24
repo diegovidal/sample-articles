@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ReviewArticleUseCase @Inject constructor(
     private val repository: ArticlesRepository,
     private val favoriteArticleUseCase: FavoriteArticleUseCase
-): UseCase<Unit, ArticlesSelectionViewContract.Action.ReviewArticle>() {
+) : UseCase<Unit, ArticlesSelectionViewContract.Action.ReviewArticle>() {
 
     override suspend fun run(params: ArticlesSelectionViewContract.Action.ReviewArticle): EitherResult<Unit> {
 

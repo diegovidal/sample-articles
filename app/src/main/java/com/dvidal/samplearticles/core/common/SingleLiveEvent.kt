@@ -14,14 +14,12 @@
  *  limitations under the License.
  */
 
-
 package com.dvidal.samplearticles.core.common
 
 import androidx.annotation.MainThread
-import android.util.Log
 import androidx.lifecycle.*
-import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import timber.log.Timber
 
 /**
  * A lifecycle-aware observable that sends only new updates after subscription, used for events like

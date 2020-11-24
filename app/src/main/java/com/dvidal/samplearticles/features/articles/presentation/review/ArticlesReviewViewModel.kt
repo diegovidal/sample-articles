@@ -1,7 +1,6 @@
 package com.dvidal.samplearticles.features.articles.presentation.review
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.BaseViewModel
@@ -10,9 +9,9 @@ import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchReviewedArticlesUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-25.
@@ -42,7 +41,7 @@ class ArticlesReviewViewModel @Inject constructor(
 
     private fun handleAction(action: ArticlesReviewViewContract.Action) {
 
-        when(action) {
+        when (action) {
             ArticlesReviewViewContract.Action.InitPage -> fetchReviewedArticles()
             ArticlesReviewViewContract.Action.RefreshGridLayoutSpanCount -> refreshGridLayoutSpanCount()
             ArticlesReviewViewContract.Action.SwitchGridLayoutSpanCount -> switchGridLayoutSpanCount()

@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  */
 
 @Parcelize
-data class ArticlesInfoParam (
+data class ArticlesInfoParam(
     val totalArticles: Int = 0,
     var totalFavoriteArticles: Int = 0
 ) : Parcelable {

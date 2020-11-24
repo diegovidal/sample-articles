@@ -9,15 +9,15 @@ import com.bumptech.glide.Glide
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import dagger.Reusable
-import kotlinx.android.synthetic.main.recycler_item_article_review.view.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.recycler_item_article_review.view.*
 
 /**
  * @author diegovidal on 2019-12-25.
  */
 
 @Reusable
-class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<ArticlesReviewAdapter.ArticleReviewViewHolder>() {
+class ArticlesReviewAdapter @Inject constructor() : RecyclerView.Adapter<ArticlesReviewAdapter.ArticleReviewViewHolder>() {
 
     private var dataSet = emptyList<ArticleView>()
     private var switchGridLayout: SwitchGridLayout = SwitchGridLayout.SwitchGridLayoutTypeList
@@ -48,7 +48,7 @@ class ArticlesReviewAdapter @Inject constructor(): RecyclerView.Adapter<Articles
         holder.bind(articleView)
     }
 
-    inner class ArticleReviewViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ArticleReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(articleView: ArticleView) {
 

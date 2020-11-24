@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * @author diegovidal on 2019-12-24.
  */
-class ArticlesActivity: AppCompatActivity() {
+class ArticlesActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator

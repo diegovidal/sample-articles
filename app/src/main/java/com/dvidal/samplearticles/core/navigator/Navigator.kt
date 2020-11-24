@@ -17,7 +17,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-class Navigator @Inject constructor(){
+class Navigator @Inject constructor() {
 
     fun inflateStartFragment(activity: AppCompatActivity) {
 

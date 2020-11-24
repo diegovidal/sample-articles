@@ -11,7 +11,7 @@ data class ArticlesRemoteResponse(
 ) {
 
     companion object {
-        fun empty(): ArticlesRemoteResponse =  ArticlesRemoteResponse(embedded = ArticlesRemoteFinalResponse(emptyList()))
+        fun empty(): ArticlesRemoteResponse = ArticlesRemoteResponse(embedded = ArticlesRemoteFinalResponse(emptyList()))
     }
 }
 

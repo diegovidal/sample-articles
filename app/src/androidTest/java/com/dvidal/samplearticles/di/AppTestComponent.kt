@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Component(modules = [
     ViewModelTestModule::class
 ])
-interface AppTestComponent: BaseAppComponent {
+interface AppTestComponent : BaseAppComponent {
 
     override fun activityComponent(): ActivityComponent.Builder
     override val viewModelFactor: ViewModelProvider.Factory

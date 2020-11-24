@@ -2,7 +2,6 @@ package com.dvidal.samplearticles.core.common
 
 import com.dvidal.samplearticles.core.common.Either.Companion.right
 
-
 /**
  * Represents a value of one of two possible types (a disjoint union).
  * Instances of [Either] are either an instance of [Left] or [Right].

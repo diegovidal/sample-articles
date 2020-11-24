@@ -19,26 +19,26 @@ sealed class ArticlesSelectionViewContract {
 
     sealed class Action {
 
-        data class InitPage(var articlesInfoParam: ArticlesInfoParam): Action()
-        object NavigateToArticleReviews: Action()
+        data class InitPage(var articlesInfoParam: ArticlesInfoParam) : Action()
+        object NavigateToArticleReviews : Action()
 
-        sealed class ReviewArticle(var sku: String): Action() {
+        sealed class ReviewArticle(var sku: String) : Action() {
 
-            data class LikeArticle(var param: String = ""): ReviewArticle(param)
-            data class DislikeArticle(var param: String = ""): ReviewArticle(param)
+            data class LikeArticle(var param: String = "") : ReviewArticle(param)
+            data class DislikeArticle(var param: String = "") : ReviewArticle(param)
         }
     }
 
     sealed class State(val articlesInfoParam: ArticlesInfoParam?) {
 
-        data class ShowTwoArticlesOnQueue(val aip: ArticlesInfoParam?, val firstArticle: ArticleView, val secondArticle: ArticleView): State(aip)
-        data class ShowLastArticleOnQueue(val aip: ArticlesInfoParam?, val lastArticle: ArticleView): State(aip)
+        data class ShowTwoArticlesOnQueue(val aip: ArticlesInfoParam?, val firstArticle: ArticleView, val secondArticle: ArticleView) : State(aip)
+        data class ShowLastArticleOnQueue(val aip: ArticlesInfoParam?, val lastArticle: ArticleView) : State(aip)
 
-        data class ArticlesSelectionEmpty(val aip: ArticlesInfoParam?): State(aip)
+        data class ArticlesSelectionEmpty(val aip: ArticlesInfoParam?) : State(aip)
     }
 
     sealed class Event {
 
-        object GoToArticleReviews: Event()
+        object GoToArticleReviews : Event()
     }
 }

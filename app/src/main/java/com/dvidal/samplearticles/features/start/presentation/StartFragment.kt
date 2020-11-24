@@ -8,12 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_start.bt_clear_articles
 import kotlinx.android.synthetic.main.fragment_start.bt_start_articles
 import kotlinx.android.synthetic.main.fragment_start.pb_clear_articles
 import kotlinx.android.synthetic.main.fragment_start.pb_start_articles
 import kotlinx.android.synthetic.main.fragment_start.tv_start_articles
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.

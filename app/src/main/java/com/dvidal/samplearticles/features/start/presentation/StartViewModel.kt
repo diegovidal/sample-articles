@@ -2,7 +2,6 @@ package com.dvidal.samplearticles.features.start.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dvidal.samplearticles.core.common.BaseViewModel
 import com.dvidal.samplearticles.core.common.SingleLiveEvent
@@ -11,9 +10,9 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.domain.usecases.ClearArticlesUseCase
 import com.dvidal.samplearticles.features.start.domain.usecases.StartArticlesUseCase
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.
@@ -37,15 +36,13 @@ class StartViewModel @Inject constructor(
     }
     override val startViewEvents: LiveData<StartViewContract.Event> = _startViewEvents
 
-
     override fun invokeAction(action: StartViewContract.Action) {
         _action.postValue(action)
     }
 
-
     private fun handleAction(action: StartViewContract.Action) {
 
-        when(action) {
+        when (action) {
             StartViewContract.Action.StartArticles -> startArticles()
             StartViewContract.Action.ClearArticles -> clearArticles()
         }

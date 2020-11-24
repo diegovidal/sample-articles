@@ -9,17 +9,16 @@ import com.dvidal.samplearticles.core.common.BaseViewModel
 import com.dvidal.samplearticles.core.common.SingleLiveEvent
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.core.common.notLet
-import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.domain.usecases.FetchUnreviewedArticlesUseCase
 import com.dvidal.samplearticles.features.articles.domain.usecases.ReviewArticleUseCase
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-25.

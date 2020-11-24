@@ -2,7 +2,6 @@ package com.dvidal.samplearticles.features.articles.domain.usecases
 
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
-import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -12,7 +11,7 @@ import javax.inject.Inject
 @Reusable
 class FavoriteArticleUseCase @Inject constructor(
     private val repository: ArticlesRepository
-): UseCase<Unit, String>() {
+) : UseCase<Unit, String>() {
 
     override suspend fun run(params: String) = repository.favoriteArticle(params)
 }

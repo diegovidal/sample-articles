@@ -25,7 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ArticlesSelectionFragmentTest: BaseEspressoTest() {
+class ArticlesSelectionFragmentTest : BaseEspressoTest() {
 
     @get:Rule
     val fragmentRule = FragmentTestRule(ArticlesSelectionFragment::class.java)

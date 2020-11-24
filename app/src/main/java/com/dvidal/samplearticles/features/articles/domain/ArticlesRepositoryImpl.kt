@@ -1,16 +1,14 @@
 package com.dvidal.samplearticles.features.articles.domain
 
-import androidx.lifecycle.LiveData
 import com.dvidal.samplearticles.BuildConfig
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.EitherResult
 import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
-import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.data.local.ArticlesLocalDataSource
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDataSource
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @author diegovidal on 2019-12-23.
@@ -36,7 +34,7 @@ class ArticlesRepositoryImpl @Inject constructor(
             val remoteResult = remoteDataSource.fetchAllArticles(NUM_ARTICLES)
             val remoteArticlesReviews = remoteResult.rightOrNull()
             val resultInsertAllArticles = insertAllArticles(remoteArticlesReviews)
-            if (resultInsertAllArticles.isRight){
+            if (resultInsertAllArticles.isRight) {
                 return localDataSource.fetchAllArticles()
             }
         }

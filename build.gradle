@@ -11,6 +11,8 @@ buildscript {
     ext.target_sdk = 30
     ext.min_sdk = 21
 
+    ext.ktlint_gradle = '9.2.1'
+
     ext.application_id = 'com.dvidal.samplearticles'
     ext.version_name = '1.0'
     ext.version_code = 1
@@ -20,21 +22,24 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_gradle"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
 allprojects {
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
     repositories {
         google()
         jcenter()
-        
     }
 }
 

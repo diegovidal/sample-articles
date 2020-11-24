@@ -90,18 +90,6 @@ class ArticlesLocalDataSourceTest {
     }
 
     @Test
-    fun `when fetch unreviewed articles should return and call articlesDao fetch unreviewed articles`() {
-
-        val list = listOf<ArticleDto>()
-        val flowList = flow { emit(list) }
-        every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns flowList
-
-        val articles = dataSource.fetchUnreviewedArticles().rightOrNull()
-        verify(exactly = 1) { appDatabase.articlesDao().fetchUnreviewedArticles() }
-        assertEquals(list, articles)
-    }
-
-    @Test
     fun `when fetch reviewed articles should return and call articlesDao fetch reviewed articles`() = runBlocking {
 
         val list = listOf<ArticleDto>()

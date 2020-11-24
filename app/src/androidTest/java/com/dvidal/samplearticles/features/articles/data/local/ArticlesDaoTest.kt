@@ -131,22 +131,6 @@ class ArticlesDaoTest {
         assertEquals(articleExpected.isFavorite, true)
     }
 
-    @Test
-    fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnEmpty() = runBlocking {
-
-        val foo = ArticleDto("foo")
-
-        val list = listOf(foo)
-        articlesDao.insertAllArticles(list)
-        articlesDao.reviewArticle(foo.sku)
-        val articles = articlesDao.fetchUnreviewedArticles()
-
-        withContext(Dispatchers.Main) {
-            articles.collect {
-                assertEquals(0, it.size)
-            }
-        }
-    }
 
     @Test
     fun whenAddArticleAndReviewAndFetchUnreviewedArticles_shouldReturnReviewedArticles() = runBlocking {

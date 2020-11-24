@@ -10,8 +10,6 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Assert.assertTrue
@@ -140,18 +138,6 @@ class ArticlesRepositoryTest {
 
         val articles = repository.fetchFavoriteArticles().rightOrNull()
         coVerify(exactly = 1) { localDataSource.fetchFavoriteArticles() }
-        Assert.assertEquals(list, articles)
-    }
-
-    @Test
-    fun `when fetch unreviewed articles should return and call localDataSource fetch unreviewed articles`() {
-
-        val list = listOf<ArticleView>()
-        val flowList = flow { emit(list) }
-        coEvery { localDataSource.fetchUnreviewedArticles() } returns Either.right(flowList)
-
-        val articles = repository.fetchUnreviewedArticles().rightOrNull()
-        verify(exactly = 1) { localDataSource.fetchUnreviewedArticles() }
         Assert.assertEquals(list, articles)
     }
 

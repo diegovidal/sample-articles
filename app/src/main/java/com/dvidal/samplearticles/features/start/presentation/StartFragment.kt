@@ -8,8 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.common.BaseFragment
-import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_start.*
+import kotlinx.android.synthetic.main.fragment_start.bt_clear_articles
+import kotlinx.android.synthetic.main.fragment_start.bt_start_articles
+import kotlinx.android.synthetic.main.fragment_start.pb_clear_articles
+import kotlinx.android.synthetic.main.fragment_start.pb_start_articles
+import kotlinx.android.synthetic.main.fragment_start.tv_start_articles
 import javax.inject.Inject
 
 /**
@@ -18,7 +21,7 @@ import javax.inject.Inject
 class StartFragment : BaseFragment() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel: StartViewContract.ViewModelEvents by lazy {
         ViewModelProvider(this, viewModelFactory).get(StartViewModel::class.java)

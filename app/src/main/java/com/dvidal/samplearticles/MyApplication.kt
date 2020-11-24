@@ -1,7 +1,7 @@
 package com.dvidal.samplearticles
 
 import android.app.Application
-import com.dvidal.samplearticles.core.di.component.AppComponent
+import com.dvidal.samplearticles.core.common.BaseAppComponent
 import com.dvidal.samplearticles.core.di.component.DaggerAppComponent
 import com.dvidal.samplearticles.core.di.module.ApplicationModule
 import timber.log.Timber
@@ -9,9 +9,9 @@ import timber.log.Timber
 /**
  * @author diegovidal on 2019-12-18.
  */
-class MyApplication: Application() {
+class MyApplication: Application(), BaseApplication {
 
-    val appComponent: AppComponent by lazy {
+    override val appComponent: BaseAppComponent by lazy {
         DaggerAppComponent
             .builder()
             .applicationModule(ApplicationModule(this))

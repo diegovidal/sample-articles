@@ -2,14 +2,9 @@ package com.dvidal.samplearticles.features.articles.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.dvidal.samplearticles.MyApplication
+import com.dvidal.samplearticles.BaseApplication
 import com.dvidal.samplearticles.R
 import com.dvidal.samplearticles.core.navigator.Navigator
-import com.dvidal.samplearticles.features.articles.presentation.review.ArticlesReviewFragment
-import com.dvidal.samplearticles.features.articles.presentation.review.ArticlesReviewFragment.Companion.ARTICLES_REVIEW_FRAGMENT_TAG
-import com.dvidal.samplearticles.features.articles.presentation.selection.ArticlesSelectionFragment
-import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
-import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
 import javax.inject.Inject
 
 /**
@@ -21,7 +16,7 @@ class ArticlesActivity: AppCompatActivity() {
     lateinit var navigator: Navigator
 
     private fun injectDagger() {
-        (application as MyApplication).appComponent.activityComponent()
+        (application as BaseApplication).appComponent.activityComponent()
             .build().inject(this)
     }
 

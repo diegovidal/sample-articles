@@ -22,7 +22,7 @@ import javax.inject.Inject
 class ArticlesReviewFragment : BaseFragment() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var adapter: ArticlesReviewAdapter

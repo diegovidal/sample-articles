@@ -1,5 +1,7 @@
 package com.dvidal.samplearticles.core.di.component
 
+import androidx.lifecycle.ViewModelProvider
+import com.dvidal.samplearticles.core.common.BaseAppComponent
 import com.dvidal.samplearticles.core.di.module.*
 import com.dvidal.samplearticles.core.di.module.viewmodel.ViewModelModule
 import dagger.Component
@@ -18,7 +20,8 @@ import javax.inject.Singleton
     CoroutineDispatcherModule::class,
     ViewModelModule::class
 ])
-interface AppComponent {
+interface AppComponent: BaseAppComponent {
 
-    fun activityComponent(): ActivityComponent.Builder
+    override fun activityComponent(): ActivityComponent.Builder
+    override val viewModelFactor: ViewModelProvider.Factory
 }

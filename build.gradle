@@ -2,7 +2,7 @@ apply from: 'buildsystem/dependencies.gradle'
 
 buildscript {
 
-    ext.kotlin_version = '1.3.61'
+    ext.kotlin_version = '1.3.72'
     ext.gradle_version = '4.1.1'
 
     ext.compile_sdk = 29
@@ -14,7 +14,7 @@ buildscript {
     ext.application_id = 'com.dvidal.samplearticles'
     ext.version_name = '1.0'
     ext.version_code = 1
-    ext.test_runner = 'androidx.test.runner.AndroidJUnitRunner'
+    ext.test_runner = 'com.dvidal.samplearticles.EspressoTestRunner'
 
 
     repositories {

@@ -9,7 +9,7 @@ Explore the project master branch and packages to see how it works. The project 
 
 ### Overview
 The `app` module is the main entry.
-The total amount of article should be easily configurable from gradle buildConfigField called NUM_ARTICLES.)
+The total amount of article is easily configurable from gradle buildConfigField called NUM_ARTICLES.)
 
 # Planning
 ![Screenshot](planning_image.jpeg)

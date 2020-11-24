@@ -10,7 +10,7 @@ abstract class BaseRequester(
 ) {
 
     suspend fun <T, R> request(apiCall: suspend() -> T, transform: (T) -> R, default: T): EitherResult<R> {
-        return when (networkHandler.isConnected) {
+        return when (networkHandler.isNetworkAvailable()) {
             true -> requestHttp(apiCall, transform, default)
             false, null -> EitherResult.left(RemoteFailure.NetworkConnection())
         }

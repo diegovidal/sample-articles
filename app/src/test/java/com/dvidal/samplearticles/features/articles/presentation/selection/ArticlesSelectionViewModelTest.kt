@@ -40,7 +40,7 @@ class ArticlesSelectionViewModelTest {
     fun setup() = coroutineRule.runBlocking {
 
         viewModel = ArticlesSelectionViewModel(coroutineRule.testDispatcher, fetchUnreviewedArticlesUseCase, reviewArticleUseCase)
-        viewModel.articlesSelectionViewEvents.observeForever {  }
+        viewModel.articlesSelectionViewEvents.observeForever { }
     }
 
     @Test
@@ -100,5 +100,4 @@ class ArticlesSelectionViewModelTest {
         val expected = ArticlesSelectionViewContract.State.ShowTwoArticlesOnQueue(null, response.first(), response[1])
         assertEquals(expected, viewModel.articlesSelectionViewStates.getOrAwaitValue())
     }
-
 }

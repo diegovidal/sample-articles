@@ -1,8 +1,11 @@
 package com.dvidal.samplearticles.features.articles.data.local
 
-import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -30,7 +33,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().insertAllArticles(list) } returns Unit
 
         dataSource.insertAllArticles(list)
-        coVerify(exactly = 1) {appDatabase.articlesDao().insertAllArticles(list)}
+        coVerify(exactly = 1) { appDatabase.articlesDao().insertAllArticles(list) }
     }
 
     @Test
@@ -40,7 +43,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().fetchAllArticles() } returns list
 
         val articles = dataSource.fetchAllArticles().rightOrNull()
-        coVerify(exactly = 1) {appDatabase.articlesDao().fetchAllArticles()}
+        coVerify(exactly = 1) { appDatabase.articlesDao().fetchAllArticles() }
         assertEquals(list, articles)
     }
 
@@ -50,7 +53,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().clearAllArticles() } returns Unit
 
         dataSource.clearAllArticles()
-        coVerify(exactly = 1) {appDatabase.articlesDao().clearAllArticles()}
+        coVerify(exactly = 1) { appDatabase.articlesDao().clearAllArticles() }
     }
 
     @Test
@@ -61,7 +64,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().reviewArticle(foo) } returns Unit
 
         dataSource.reviewArticle(foo)
-        coVerify(exactly = 1) {appDatabase.articlesDao().reviewArticle(foo)}
+        coVerify(exactly = 1) { appDatabase.articlesDao().reviewArticle(foo) }
     }
 
     @Test
@@ -72,7 +75,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().favoriteArticle(foo) } returns Unit
 
         dataSource.favoriteArticle(foo)
-        coVerify(exactly = 1) {appDatabase.articlesDao().favoriteArticle(foo)}
+        coVerify(exactly = 1) { appDatabase.articlesDao().favoriteArticle(foo) }
     }
 
     @Test
@@ -82,7 +85,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().fetchFavoriteArticles() } returns list
 
         val articles = dataSource.fetchFavoriteArticles().rightOrNull()
-        coVerify(exactly = 1) {appDatabase.articlesDao().fetchFavoriteArticles()}
+        coVerify(exactly = 1) { appDatabase.articlesDao().fetchFavoriteArticles() }
         assertEquals(list, articles)
     }
 
@@ -94,7 +97,7 @@ class ArticlesLocalDataSourceTest {
         every { appDatabase.articlesDao().fetchUnreviewedArticles() } returns flowList
 
         val articles = dataSource.fetchUnreviewedArticles().rightOrNull()
-        verify(exactly = 1) {appDatabase.articlesDao().fetchUnreviewedArticles()}
+        verify(exactly = 1) { appDatabase.articlesDao().fetchUnreviewedArticles() }
         assertEquals(list, articles)
     }
 
@@ -105,7 +108,7 @@ class ArticlesLocalDataSourceTest {
         coEvery { appDatabase.articlesDao().fetchReviewedArticles() } returns list
 
         val articles = dataSource.fetchReviewedArticles().rightOrNull()
-        coVerify(exactly = 1) {appDatabase.articlesDao().fetchReviewedArticles()}
+        coVerify(exactly = 1) { appDatabase.articlesDao().fetchReviewedArticles() }
         assertEquals(list, articles)
     }
 }

@@ -1,10 +1,10 @@
 package com.dvidal.samplearticles.features.articles.domain.usecases
 
 import com.dvidal.samplearticles.core.common.Either
-import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
-import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

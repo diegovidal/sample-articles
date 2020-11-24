@@ -1,9 +1,7 @@
 package com.dvidal.samplearticles.features.articles.domain.usecases
 
-import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.UseCase
-import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import io.mockk.every

@@ -1,9 +1,12 @@
 package com.dvidal.samplearticles.features.articles.data.remote
 
 import com.dvidal.samplearticles.core.datasource.remote.NetworkHandler
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -35,7 +38,7 @@ class ArticlesRemoteDataSourceTest {
         coEvery { remoteApi.fetchAllArticles(numArticles) } returns mockRemoteResponse
 
         val expectedRemoteResponse = remoteDataSource.fetchAllArticles(numArticles).rightOrNull()
-        coVerify(exactly = 1) {remoteApi.fetchAllArticles(numArticles)}
+        coVerify(exactly = 1) { remoteApi.fetchAllArticles(numArticles) }
         assertEquals(expectedRemoteResponse, remoteResponse.embedded.articles)
     }
 }

@@ -4,7 +4,9 @@ import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.common.UseCase
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -31,6 +33,6 @@ class StartArticlesUseCaseTest {
         coEvery { repository.fetchAllArticles() } returns Either.right(list)
 
         useCase.run(UseCase.None())
-        coVerify(exactly = 1) {repository.fetchAllArticles()}
+        coVerify(exactly = 1) { repository.fetchAllArticles() }
     }
 }

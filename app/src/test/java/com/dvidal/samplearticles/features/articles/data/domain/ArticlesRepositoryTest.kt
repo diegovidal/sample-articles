@@ -1,15 +1,16 @@
 package com.dvidal.samplearticles.features.articles.data.domain
 
-import androidx.lifecycle.MutableLiveData
 import com.dvidal.samplearticles.core.common.Either
 import com.dvidal.samplearticles.core.datasource.remote.RemoteFailure
-import com.dvidal.samplearticles.features.articles.data.local.ArticleDto
 import com.dvidal.samplearticles.features.articles.data.local.ArticlesLocalDataSource
 import com.dvidal.samplearticles.features.articles.data.remote.ArticlesRemoteDataSource
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepository
 import com.dvidal.samplearticles.features.articles.domain.ArticlesRepositoryImpl
 import com.dvidal.samplearticles.features.articles.presentation.ArticleView
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert

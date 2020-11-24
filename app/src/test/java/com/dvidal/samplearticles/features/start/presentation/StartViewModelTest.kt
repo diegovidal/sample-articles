@@ -40,7 +40,7 @@ class StartViewModelTest {
     fun setup() = coroutineRule.runBlocking {
 
         viewModel = StartViewModel(coroutineRule.testDispatcher, clearArticlesUseCase, startArticlesUseCase)
-        viewModel.startViewEvents.observeForever {  }
+        viewModel.startViewEvents.observeForever { }
     }
 
     @Test
@@ -81,7 +81,7 @@ class StartViewModelTest {
 
         viewModel.invokeAction(StartViewContract.Action.StartArticles)
         val expected = StartViewContract.Event.StartArticlesSuccess(articlesInfoParam)
-        assertEquals(expected , viewModel.startViewEvents.getOrAwaitValue())
+        assertEquals(expected, viewModel.startViewEvents.getOrAwaitValue())
     }
 
     @Test

@@ -40,7 +40,7 @@ class ArticlesReviewViewModelTest {
     fun setup() {
 
         viewModel = ArticlesReviewViewModel(dispatcher, fetchReviewedArticlesUseCase)
-        viewModel.articlesReviewViewEvents.observeForever {  }
+        viewModel.articlesReviewViewEvents.observeForever { }
     }
 
     @Test

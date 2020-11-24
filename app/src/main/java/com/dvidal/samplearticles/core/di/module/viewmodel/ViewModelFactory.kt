@@ -1,35 +1,21 @@
 package com.dvidal.samplearticles.core.di.module.viewmodel
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 
 /**
  * @author diegovidal on 17/12/18.
  */
-@Singleton
-@Suppress("UNCHECKED_CAST")
-class ViewModelFactory
-@Inject constructor(private val creators: Map<Class<out ViewModel>,
-        @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val creator = creators[modelClass] ?:
-        creators.asIterable().firstOrNull { modelClass.isAssignableFrom(it.key) }?.value ?:
-        throw IllegalArgumentException("Unknown ViewModel class $modelClass")
+class ViewModelFactory @Inject constructor(
+    private val classToViewModel: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>
+): ViewModelProvider.Factory {
 
-        return try { creator.get() as T }
-        catch (e: Exception) { throw RuntimeException(e) }
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return classToViewModel[modelClass]?.get() as? T
+            ?: throw NullPointerException("No view model mapping for class: ${modelClass.name}")
     }
-
-    inline fun <reified T : ViewModel> get(activity: FragmentActivity): T? =
-            ViewModelProviders.of(activity, this)[T::class.java]
-
-    inline fun <reified T : ViewModel> get(fragment: Fragment): T? =
-            ViewModelProviders.of(fragment, this)[T::class.java]
 }

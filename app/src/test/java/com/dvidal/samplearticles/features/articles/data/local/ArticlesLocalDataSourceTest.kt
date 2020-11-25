@@ -3,10 +3,7 @@ package com.dvidal.samplearticles.features.articles.data.local
 import com.dvidal.samplearticles.core.datasource.local.AppDatabase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before

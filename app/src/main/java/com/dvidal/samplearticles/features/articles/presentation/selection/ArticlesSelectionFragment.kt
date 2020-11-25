@@ -14,6 +14,7 @@ import com.dvidal.samplearticles.features.articles.presentation.ArticleView
 import com.dvidal.samplearticles.features.articles.presentation.ArticlesActivity
 import com.dvidal.samplearticles.features.start.domain.ArticlesInfoParam
 import com.dvidal.samplearticles.features.start.presentation.StartActivity.Companion.EXTRA_ARTICLES_INFO_PARAM
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.empty_view_articles_selection.bt_see_reviews
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_dislike_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.bt_like_article
@@ -23,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_articles_selection.iv_first_artic
 import kotlinx.android.synthetic.main.fragment_articles_selection.iv_second_article
 import kotlinx.android.synthetic.main.fragment_articles_selection.pb_content_view
 import kotlinx.android.synthetic.main.fragment_articles_selection.tv_articles_info
-import javax.inject.Inject
 
 /**
  * @author diegovidal on 2019-12-24.
@@ -78,7 +78,6 @@ class ArticlesSelectionFragment : BaseFragment() {
             handleAnimation(R.anim.anim_right_to_left) {
                 viewModel.invokeAction(ArticlesSelectionViewContract.Action.ReviewArticle.DislikeArticle())
             }
-
         }
         bt_see_reviews.setOnClickListener {
             viewModel.invokeAction(ArticlesSelectionViewContract.Action.NavigateToArticleReviews)

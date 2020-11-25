@@ -19,7 +19,7 @@ class NetworkHandler @Inject constructor(
         val connectivityManager = context.connectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network= connectivityManager.activeNetwork ?: return false
+            val network = connectivityManager.activeNetwork ?: return false
             val activeNetwork =
                 connectivityManager.getNetworkCapabilities(network) ?: return false
 

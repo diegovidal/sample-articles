@@ -92,8 +92,16 @@ class ArticlesSelectionFragment : BaseFragment() {
         animation.setAnimationListener(object : Animation.AnimationListener {
 
             override fun onAnimationRepeat(animation: Animation?) {}
-            override fun onAnimationEnd(animation: Animation?) { invokeAction() }
-            override fun onAnimationStart(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                invokeAction()
+                bt_like_article?.isEnabled = true
+                bt_dislike_article?.isEnabled = true
+            }
+            override fun onAnimationStart(animation: Animation?) {
+                bt_like_article?.isEnabled = false
+                bt_dislike_article?.isEnabled = false
+            }
         })
     }
 
